@@ -19,10 +19,10 @@ class _HomePageState extends State<HomePage> {
         title: GradientText(
           "FoodBuddy Online",
           style: TextStyle(
-              color: Colors.red[400],
+              // color: Colors.red[400],
               fontWeight: FontWeight.bold,
               fontSize: 30),
-          colors: [Colors.red, Colors.redAccent],
+          colors: [Colors.pinkAccent, Colors.orangeAccent],
         ),
         actions: [
           IconButton(

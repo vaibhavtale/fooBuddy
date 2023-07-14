@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/home_page.dart';
+import 'package:foodbuddy/pages/login_page.dart';
 import 'package:foodbuddy/pages/profile_page.dart';
 import 'package:foodbuddy/pages/saved_items_page.dart';
 import 'package:foodbuddy/pages/search_page.dart';
+import 'package:foodbuddy/pages/toggle_page.dart';
 
 import 'components/hotels.dart';
 
@@ -20,7 +22,7 @@ class _MyNavigationBarState extends State<MyNavigationBar> {
     HomePage(),
     SearchScreenPage(),
     SavedItemsPage(),
-    ProfilePage(),
+    TogglePage(),
   ];
 
   @override
