@@ -36,12 +36,9 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
       ),
       body: ListView.builder(
-          itemCount: 7,
+          itemCount: hotelList.length,
           itemBuilder: (context, index) {
-            HotelCard hotelcard = new HotelCard(
-                imagePath: "images/f2.jpg",
-                restaurantName: "Hotel Surya",
-                nonVeg: true);
+            HotelCard hotelcard = hotelList[index];
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: HotelStyle(hotelCard: hotelcard),
