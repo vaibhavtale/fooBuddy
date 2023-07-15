@@ -44,7 +44,12 @@ class HotelStyle extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 ),
-                SizedBox(height: 5,),
+
+                Divider(
+                  color: Colors.white24,
+                  height: 7,
+                ),
+
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

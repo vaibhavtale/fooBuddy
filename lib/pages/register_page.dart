@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/pages/profile_page.dart';
+import 'package:foodbuddy/pages/toggle_page.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -12,6 +15,9 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passWordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
+  final TextEditingController _adressController = TextEditingController();
 
   Future<User?> createUser() async {
     try {
@@ -19,20 +25,46 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _emailController.text.trim(),
         password: _passWordController.text.trim(),
       );
-    } catch (e){
-      showDialog(context: context, builder: (context) => const AlertDialog(
-        title: Text("Please enter valid email."),
-      ));
+
+      print(_emailController.text.trim());
+
+      addUserDetails(
+        _emailController.text.trim(),
+        int.parse(_phoneController.text.trim()),
+        _adressController.text.trim(),
+        _nameController.text.trim(),
+      );
+
+      Navigator.of(context).pop(
+        MaterialPageRoute(
+          builder: (context) => TogglePage(),
+        ),
+      );
+    } catch (e) {
+      showDialog(
+          context: context,
+          builder: (context) => const AlertDialog(
+                title: Text("Please enter valid email."),
+              ));
       print(e);
     }
     return null;
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _passWordController.dispose();
     _emailController.dispose();
+    _phoneController.dispose();
+    _adressController.dispose();
+    _nameController.dispose();
     super.dispose();
+  }
+
+  Future addUserDetails(
+      String email, int phone, String adress, String name) async {
+    await FirebaseFirestore.instance.collection('users').add(
+        {"email": email, "phone": phone, "first_name": name, "adress": adress});
   }
 
   @override
@@ -79,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: TextField(
+                      controller: _nameController,
                       decoration: InputDecoration(
                         hintText: "Name...",
                         hintStyle: TextStyle(fontSize: 20),
@@ -102,6 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: TextField(
+                      controller: _adressController,
                       decoration: InputDecoration(
                         hintText: "Adress...",
                         hintStyle: TextStyle(fontSize: 20),
@@ -149,6 +183,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
                     child: TextField(
+                      controller: _phoneController,
                       decoration: InputDecoration(
                         hintText: "Phone...",
                         hintStyle: TextStyle(fontSize: 20),
@@ -186,25 +221,26 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(
-                      colors: [Colors.red, Colors.orangeAccent],
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                  child: GestureDetector(
-                    onTap: () => createUser(),
+              GestureDetector(
+                onTap: ()=> createUser(),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(
+                        colors: [Colors.red, Colors.orangeAccent],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight),
+                  ),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                     child: Text(
                       "Create Account",
                       style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
+                        fontSize: 30,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

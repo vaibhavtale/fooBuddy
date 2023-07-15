@@ -13,20 +13,36 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passWordController = TextEditingController();
+  final TextEditingController _resetPasswordController = TextEditingController();
 
   Future<User?> signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _emailController.text.trim(),
-      password: _passWordController.text.trim(),
-    );
-
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passWordController.text.trim(),
+      );
+    } catch (e) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Please enter valid credentials."),
+        ),
+      );
+    }
     return null;
   }
 
+  Future resetPassword() async {
+    await FirebaseAuth.instance
+        .sendPasswordResetEmail(email: _resetPasswordController.text.trim());
+    Navigator.of(context).pop();
+  }
+
   @override
-  void dispose(){
+  void dispose() {
     _passWordController.dispose();
     _emailController.dispose();
+    _resetPasswordController.dispose();
     super.dispose();
   }
 
@@ -53,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 25,
             ),
-            Column(
+            const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
@@ -127,17 +143,17 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  gradient: LinearGradient(colors: [
-                    Colors.orangeAccent,
-                    Colors.deepOrangeAccent,
-                  ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-              child:  Padding(
-                padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
-                child: GestureDetector(
-                  onTap: ()=>signIn(),
+            GestureDetector(
+              onTap: () => signIn(),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    gradient: LinearGradient(colors: [
+                      Colors.orangeAccent,
+                      Colors.deepOrangeAccent,
+                    ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
                   child: Text(
                     "Login",
                     style: TextStyle(
@@ -151,15 +167,70 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            Container(
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: Colors.grey[300]),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(fontSize: 18),
+            GestureDetector(
+              onTap: () {
+                _resetPasswordController.clear();
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(
+                      "Reset Password",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "Email will be sent with a \nlink please follow that to \nreset password.",
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              controller: _resetPasswordController,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Email",
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(
+                          "cancel",
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () => resetPassword(),
+                          child: Text("send link"))
+                    ],
+                  ),
+                );
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.grey[300]),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: Text(
+                    "Forgot Password?",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
             ),
