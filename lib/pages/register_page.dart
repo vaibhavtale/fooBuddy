@@ -28,7 +28,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       print(_emailController.text.trim());
 
-      addUserDetails(
+      await addUserDetails(
         _emailController.text.trim(),
         int.parse(_phoneController.text.trim()),
         _adressController.text.trim(),
