@@ -20,6 +20,11 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _adressController = TextEditingController();
 
   Future<User?> createUser() async {
+
+    showDialog(
+        context: context,
+        builder: (context) => Center(child: CircularProgressIndicator()));
+
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -48,6 +53,9 @@ class _RegisterPageState extends State<RegisterPage> {
               ));
       print(e);
     }
+
+    Navigator.of(context).pop();
+
     return null;
   }
 

@@ -13,9 +13,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passWordController = TextEditingController();
-  final TextEditingController _resetPasswordController = TextEditingController();
+  final TextEditingController _resetPasswordController =
+      TextEditingController();
 
   Future<User?> signIn() async {
+    showDialog(
+        context: context,
+        builder: (context) => Center(child: CircularProgressIndicator()));
+
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: _emailController.text.trim(),
@@ -29,6 +34,9 @@ class _LoginPageState extends State<LoginPage> {
         ),
       );
     }
+
+    Navigator.of(context).pop();
+
     return null;
   }
 
