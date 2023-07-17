@@ -13,9 +13,10 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final currentUser = FirebaseAuth.instance.currentUser;
   final CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
 
   String? currentUserDocumentId;
+  bool isLoading = true;
 
   Future<void> getCurrentUserDocumentId() async {
     QuerySnapshot snapshot = await usersCollection
@@ -28,6 +29,10 @@ class _ProfilePageState extends State<ProfilePage> {
         currentUserDocumentId = snapshot.docs[0].id;
       });
     }
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   Future signOutUser() async {
@@ -45,7 +50,8 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: StreamBuilder<DocumentSnapshot>(
+        body: isLoading ? Center(child: CircularProgressIndicator(color: Colors.black26,),)
+       : StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
           .collection('users')
           .doc(currentUserDocumentId)
@@ -95,10 +101,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      child: Text(userData['email'])
-                    ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20, vertical: 10),
+                        child: Text(userData['email'])),
                   ),
                 ),
                 SizedBox(
@@ -177,13 +182,9 @@ class _ProfilePageState extends State<ProfilePage> {
           // print(currentUser);
           print(snapshot.data);
           return Center(
-
             child: Text(snapshot.error.toString()),
-
           );
         }
-
-        // return Center(child: CircularProgressIndicator(),);
       },
     ));
   }

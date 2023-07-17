@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:foodbuddy/components/menu_card.dart';
+import '../components/menu_style.dart';
 
 class SearchScreenPage extends StatefulWidget {
   const SearchScreenPage({Key? key}) : super(key: key);
@@ -9,6 +10,20 @@ class SearchScreenPage extends StatefulWidget {
 }
 
 class _SearchScreenPageState extends State<SearchScreenPage> {
+  String searchQuery = '';
+
+  List<MenuCard> filteredMenuList() {
+    if (searchQuery.isEmpty) {
+      return [];
+    } else {
+      return menuList
+          .where((menu) => menu.foodName
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase()))
+          .toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,18 +46,23 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                   ),
                   child: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.search,
                         size: 30,
                         color: Colors.redAccent,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: TextField(
+                          onChanged: (value) {
+                            setState(() {
+                              searchQuery = value;
+                            });
+                          },
                           style: TextStyle(fontSize: 20, color: Colors.black),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             hintText: "Search",
                             hintStyle: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -58,13 +78,14 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
               ),
             ),
             Expanded(
-                child: Center(
-              child: GradientText(
-                "Search the Food here",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                colors: [Colors.red, Colors.orange],
+              child: ListView.builder(
+                itemCount: filteredMenuList().length,
+                itemBuilder: (context, index) {
+                  MenuCard menuCard = filteredMenuList()[index];
+                  return MyMenuStyle(menuCard: menuCard,);
+                },
               ),
-            ))
+            ),
           ],
         ),
       ),
