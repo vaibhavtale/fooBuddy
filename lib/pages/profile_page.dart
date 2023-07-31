@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/components/orders.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -47,9 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
     getCurrentUserDocumentId();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  // the previous state of the page with scaffold widget is over here.
+  /*Scaffold(
         body: isLoading ? Center(child: CircularProgressIndicator(color: Colors.black26,),)
        : StreamBuilder<DocumentSnapshot>(
       stream: FirebaseFirestore.instance
@@ -186,6 +186,111 @@ class _ProfilePageState extends State<ProfilePage> {
           );
         }
       },
-    ));
+    ));*/
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // appBar: AppBar(),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(currentUserDocumentId)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final userData =
+                      snapshot.data!.data() as Map<String, dynamic>;
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          offset: Offset(0, 2),
+                          blurRadius: 6.0,
+                          spreadRadius: 0,
+                        ),
+                      ],
+                    ),
+                    height: MediaQuery.of(context).size.height * 0.65,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 50),
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 100,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 50.0,
+                                backgroundImage: AssetImage(
+                                  "images/img1.jpg",
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                userData['first_name'],
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 50,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("recent orders"),
+                              Text(
+                                "view all",
+                                style: TextStyle(color: Colors.blue),
+                              ),
+
+                            ],
+                          ),
+                          Column(
+                            children: [
+                              /*ListView.builder(
+                                itemCount: OrderList.length,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(20),
+                                    child: ListTile(
+                                      title: Text(OrderList[index].itemName),
+                                      trailing: Text(OrderList[index].price.toString()),
+                                    ),
+                                  );
+                                },
+                              ),*/
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  print(snapshot.error.toString());
+                  return Center(
+                    child: Text("error occured"),
+                  );
+                }
+              },
+            ),
+    );
   }
 }

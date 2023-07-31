@@ -25,6 +25,6 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
             subtitle: Text(menuCard.price.toString()),
           ),
         );
-        });
+        },);
   }
 }
