@@ -12,10 +12,9 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: userCart.length,
-        itemBuilder: (context, index){
-
-        MenuCard menuCard = userCart[index];
+      itemCount: savedItems.length,
+      itemBuilder: (context, index) {
+        MenuCard menuCard = savedItems[index];
 
         return Padding(
           padding: const EdgeInsets.all(20),
@@ -25,6 +24,7 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
             subtitle: Text(menuCard.price.toString()),
           ),
         );
-        },);
+      },
+    );
   }
 }

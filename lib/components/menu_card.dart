@@ -28,7 +28,7 @@ List<MenuCard> menuList = [
   MenuCard(imagePath: "images/dumpling4.jpg", foodName: "dumpling", nonVeg: false, price: 150),
 ];
 
-List<MenuCard> userCart = [];
+List<MenuCard> userCartList = [];
 List<MenuCard> savedItems = [];
 
 //for full list
@@ -39,7 +39,7 @@ List<MenuCard> getMenuList() {
 //for adding items to Cart
 void addItemToCart(MenuCard menuCard){
 
-  userCart.add(menuCard);
+  userCartList.add(menuCard);
 }
 
 //for saving Items
@@ -52,7 +52,7 @@ void saveItemToList(MenuCard menuCard){
 // for Cart
 void removeFromCart(MenuCard menuCard){
 
-  userCart.remove(menuCard);
+  userCartList.remove(menuCard);
 }
 
 //for saved list

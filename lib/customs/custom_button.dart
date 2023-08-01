@@ -12,7 +12,15 @@ class CustomBtn extends StatelessWidget {
       onTap: () {
         onTap();
       },
-      child: Container(),
+      child: Container(
+        width: 170,
+        height: 40,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(30),
+          color: Colors.yellow,
+        ),
+        child: Center(child: Text(text, style: TextStyle(fontWeight: FontWeight.bold),)),
+      ),
     );
   }
 }

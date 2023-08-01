@@ -30,7 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       await addUserDetails(
         _emailController.text.trim(),
-        int.parse(_phoneController.text.trim()),
+        _phoneController.text.trim(),
         _adressController.text.trim(),
         _nameController.text.trim(),
       );
@@ -62,9 +62,9 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   Future addUserDetails(
-      String email, int phone, String adress, String name) async {
+      String email, String phone, String adress, String name) async {
     await FirebaseFirestore.instance.collection('users').add(
-        {"email": email, "phone": phone, "first_name": name, "adress": adress});
+        {"email": email, "phone_number": phone, "name": name, "address": adress,});
   }
 
   @override
@@ -113,7 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        hintText: "Name...",
+                        hintText: "Name..",
                         hintStyle: TextStyle(fontSize: 20),
                         border: InputBorder.none,
                       ),
