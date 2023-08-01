@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/home_page.dart';
-import 'package:foodbuddy/pages/login_page.dart';
-import 'package:foodbuddy/pages/profile_page.dart';
 import 'package:foodbuddy/pages/saved_items_page.dart';
 import 'package:foodbuddy/pages/search_page.dart';
 import 'package:foodbuddy/pages/toggle_page.dart';
-
-import 'components/hotels.dart';
 
 class MyNavigationBar extends StatefulWidget {
   const MyNavigationBar({Key? key}) : super(key: key);
@@ -18,11 +14,11 @@ class MyNavigationBar extends StatefulWidget {
 class _MyNavigationBarState extends State<MyNavigationBar> {
   int _currIndex = 0;
 
-  List<Widget> _bottomBar = [
-    HomePage(),
-    SearchScreenPage(),
-    SavedItemsPage(),
-    TogglePage(),
+  final List<Widget> _bottomBar = [
+    const TogglePage(),
+    const HomePage(),
+    const SearchScreenPage(),
+    const SavedItemsPage(),
   ];
 
   @override

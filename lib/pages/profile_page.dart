@@ -1,9 +1,7 @@
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodbuddy/customs/custom_button.dart';
+import 'package:foodbuddy/components/custom_button.dart';
 import 'package:foodbuddy/pages/user_cart_page.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -16,33 +14,12 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white54,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.white54,
-        leading: Icon(
-          Icons.navigate_before,
-          color: Colors.black,
-        ),
-        title: Center(
-          child: Text(
-            "My Profile",
-            style: TextStyle(color: Colors.black),
-          ),
-        ),
-        actions: [
-          // Logout Button
-          IconButton(
-            icon: Icon(Icons.logout),
-            color: Colors.black,
-            onPressed: _logOut,
-          ),
-        ],
-      ),
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
             future: _firestore
@@ -66,90 +43,44 @@ class _ProfilePageState extends State<ProfilePage> {
                               email: data['email'],
                             ),
 
-                            CustomBtn(
-                                text: "Edit Profile", onTap: _editProfileInfo),
-
-                            SizedBox(
-                              height: 30,
-                            ),
-
                             Column(
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 100,),
-                                  child: _profileOptions(
-                                    text: "Contact",
-                                    icon: Icon(
-                                      Icons.call,
-                                      color: Colors.blue,
-                                    ),
-                                    tail: data["phone_number"],
-                                  ),
+                                CustomBtn(
+                                  text: "Edit profile",
+                                  onTap: () {},
+                                  icon: Icons.edit,
+                                  loading: _loading,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 100),
-                                  child: _profileOptions(
-                                    text: "address",
-                                    icon: Icon(
-                                      Icons.local_post_office,
-                                      color: Colors.blue,
-                                    ),
-                                    tail: data["address"],
-                                  ),
+                                CustomBtn(
+                                  text: "Recent orders",
+                                  onTap: () {},
+                                  icon: Icons.shopping_cart_outlined,
+                                  loading: _loading,
                                 ),
-
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 100),
-                                  child: _profileOptions(
-                                    text: "Recent order",
-                                    icon: Icon(
-                                      Icons.person,
-                                      color: Colors.blue,
-                                    ),
-                                    tail: data["phone_number"],
-                                  ),
+                                CustomBtn(
+                                  text: "Call us",
+                                  onTap: () {},
+                                  icon: Icons.call,
+                                  loading: _loading,
                                 ),
-                              ],
-                            ),
-
-
-                            Divider(
-                              color: Colors.grey,
-                            ),
-
-                            SizedBox(
-                              height: 10,
-                            ),
-
-                            Column(
-                              children: [
-                                GestureDetector(
-                                  onTap: () { _showUserCart(context);},
-                                  child: _customPageRout(
-                                      icon: Icon(
-                                        Icons.shopping_cart,
-                                        color: Colors.white,
-                                        size: 20,
-                                      ),
-                                      text: "my cart",
-                                      onTap: _showUserCart),
-                                ),
-                                _customPageRout(
-                                    icon: Icon(
-                                      Icons.call,
-                                      color: Colors.white,
-                                      size: 20,
-                                    ),
-                                    text: "call us",
-                                    onTap: _showUserCart),
-
+                                CustomBtn(
+                                  text: "Logout",
+                                  onTap: () async {
+                                    if (!_loading) {
+                                      setState(() {
+                                        _loading = true;
+                                      });
+                                      await _auth.signOut();
+                                      setState(() {
+                                        _loading = false;
+                                      });
+                                    }
+                                  },
+                                  icon: Icons.arrow_right_alt,
+                                  loading: _loading,
+                                )
                               ],
                             )
-
-                            // cart
-                            // past orders
-                            // call us
-                            // logout
                           ],
                         ),
                       ),
@@ -183,7 +114,7 @@ class _ProfileIconWithName extends StatelessWidget {
           radius: 60,
           backgroundImage: NetworkImage(profileImage),
         ),
-        SizedBox(height: 15),
+        const SizedBox(height: 15),
         Text(
           name,
           style: const TextStyle(
@@ -191,7 +122,7 @@ class _ProfileIconWithName extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         ),
         Text(
@@ -201,7 +132,7 @@ class _ProfileIconWithName extends StatelessWidget {
             fontWeight: FontWeight.w300,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 30,
         ),
       ],
@@ -214,90 +145,48 @@ class _profileOptions extends StatelessWidget {
   final String text;
   final String tail;
 
-  const _profileOptions({Key? key, required this.text, required this.icon, required this.tail})
+  const _profileOptions(
+      {Key? key, required this.text, required this.icon, required this.tail})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        children: [
-          icon,
-          SizedBox(width: 20,),
-          Text(text, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w300),),
-          SizedBox(width: 100,),
-          Expanded(
-            child: Wrap(
-              alignment: WrapAlignment.start,
-              children: [
-                Text(
-                  tail,
-                  style: TextStyle(fontSize: 13),
-                  maxLines: null, // Allow the text to wrap to multiple lines
-                ),
-              ],
-            ),
-          )
-        ],
-      ),
-    );
-  }
-}
-
-class _customPageRout extends StatelessWidget {
-  final String text;
-  final Icon icon;
-  final void onTap;
-
-  const _customPageRout(
-      {Key? key, required this.icon, required this.text, required this.onTap})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        width: 200,
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          gradient: LinearGradient(
-            colors: [
-              Colors.lightBlueAccent,
-              Colors.deepPurpleAccent,
-            ],
-            begin: Alignment.bottomLeft,
-            end: Alignment.topRight,
-          ),
+    return Row(
+      children: [
+        icon,
+        const SizedBox(
+          width: 20,
         ),
-        child: Center(
-          child: Row(
+        Text(
+          text,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
+        ),
+        const SizedBox(
+          width: 100,
+        ),
+        Expanded(
+          child: Wrap(
+            alignment: WrapAlignment.start,
             children: [
-              SizedBox(
-                width: 45,
-              ),
-              icon,
-              SizedBox(
-                width: 5,
-              ),
               Text(
-                text,
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w300),
+                tail,
+                style: const TextStyle(fontSize: 13),
+                maxLines: null, // Allow the text to wrap to multiple lines
               ),
             ],
           ),
-        ),
-      ),
+        )
+      ],
     );
   }
 }
 
 void _showUserCart(BuildContext context) {
-Navigator.of(context).push(MaterialPageRoute(builder: (context) => UserCart(),),);
+  Navigator.of(context).push(
+    MaterialPageRoute(
+      builder: (context) => const UserCart(),
+    ),
+  );
 }
 
 Future _logOut() async {

@@ -13,9 +13,9 @@ class TogglePage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ProfilePage();
+            return const ProfilePage();
           } else {
-            return LoginPage();
+            return const LoginPage();
           }
         },
       ),

@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.transparent,
         title: GradientText(
           "FoodBuddy Online",
-          style: TextStyle(
+          style: const TextStyle(
               // color: Colors.red[400],
               fontWeight: FontWeight.bold,
               fontSize: 30),
