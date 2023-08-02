@@ -114,8 +114,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15)
-                    ),
+                        borderRadius: BorderRadius.circular(15)),
                     width: 70,
                     height: 60,
                     child: Icon(
@@ -128,13 +127,15 @@ class _MenuItemPageState extends State<MenuItemPage> {
                   onTap: () => addItemToCart(widget.menuCard),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.deepOrange,
-                      borderRadius: BorderRadius.circular(15)
-                    ),
+                        color: Colors.deepOrange,
+                        borderRadius: BorderRadius.circular(15)),
                     width: 300,
                     height: 60,
                     child: Center(
-                      child: Text("Add To Cart", style: TextStyle(fontSize: 22, color: Colors.white),),
+                      child: Text(
+                        "Add To Cart",
+                        style: TextStyle(fontSize: 22, color: Colors.white),
+                      ),
                     ),
                   ),
                 )

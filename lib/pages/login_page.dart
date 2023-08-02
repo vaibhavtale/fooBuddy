@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_textfield.dart';
 import 'package:foodbuddy/pages/register_page.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,7 +14,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passWordController = TextEditingController();
-  final TextEditingController _resetPasswordController = TextEditingController();
+  final TextEditingController _resetPasswordController =
+      TextEditingController();
 
   Future<User?> signIn() async {
     try {
@@ -60,7 +60,9 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 30,
             ),
-            CustomGradientText(text: 'Hey Buddy',),
+            CustomGradientText(
+              text: 'Hey Buddy',
+            ),
             SizedBox(
               height: 25,
             ),
@@ -84,7 +86,11 @@ class _LoginPageState extends State<LoginPage> {
               height: 30,
             ),
             CustomTextField(text: "email", textController: _emailController),
-            CustomTextField(text: "password", textController: _passWordController, obscure: true,),
+            CustomTextField(
+              text: "password",
+              textController: _passWordController,
+              obscure: true,
+            ),
             SizedBox(
               height: 10,
             ),
@@ -168,7 +174,10 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterPage())),
-              child: CustomCreateButton(text: 'Create New Account', gradient: true,),
+              child: CustomCreateButton(
+                text: 'Create New Account',
+                gradient: true,
+              ),
             ),
           ],
         ),

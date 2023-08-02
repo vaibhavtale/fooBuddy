@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/my_bottom_nav_bar.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -24,8 +25,7 @@ macos     1:293751067507:ios:21a24aee6bf2c3c1b5eb06
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  Future<void> simulatorAppLoading() async{
-
+  Future<void> simulatorAppLoading() async {
     await Future.delayed(Duration(seconds: 1));
   }
 
@@ -37,14 +37,13 @@ class MyApp extends StatelessWidget {
         home: FutureBuilder(
           future: simulatorAppLoading(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-
-            if(snapshot.connectionState == ConnectionState.waiting){
-
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Scaffold(
-                body: Center(child: CircularProgressIndicator(),),
+                body: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
-            } else{
-
+            } else {
               return MyNavigationBar();
             }
           },

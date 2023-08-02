@@ -4,7 +4,13 @@ class CustomTextField extends StatelessWidget {
   final String text;
   final TextEditingController textController;
   final bool? obscure;
-  const CustomTextField({Key? key, required this.text, required this.textController, this.obscure}) : super(key: key);
+
+  const CustomTextField(
+      {Key? key,
+      required this.text,
+      required this.textController,
+      this.obscure})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +22,7 @@ class CustomTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding:  EdgeInsets.symmetric(
-            horizontal: 30, vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 30, vertical: 5),
         child: TextField(
           obscureText: obscure == true ? true : false,
           controller: textController,

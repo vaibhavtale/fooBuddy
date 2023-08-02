@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '293751067507',
     projectId: 'foodbuddy-9558e',
     storageBucket: 'foodbuddy-9558e.appspot.com',
-    iosClientId: '293751067507-d913rumb841c1al7fo6nmsvfkk7ah3ff.apps.googleusercontent.com',
+    iosClientId:
+        '293751067507-d913rumb841c1al7fo6nmsvfkk7ah3ff.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodbuddy',
   );
 
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '293751067507',
     projectId: 'foodbuddy-9558e',
     storageBucket: 'foodbuddy-9558e.appspot.com',
-    iosClientId: '293751067507-v1d1t80ol24c47dmferbkqg3otfbcj2f.apps.googleusercontent.com',
+    iosClientId:
+        '293751067507-v1d1t80ol24c47dmferbkqg3otfbcj2f.apps.googleusercontent.com',
     iosBundleId: 'com.example.foodbuddy.RunnerTests',
   );
 }

@@ -3,9 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_textfield.dart';
-import 'package:foodbuddy/pages/profile_page.dart';
 import 'package:foodbuddy/pages/toggle_page.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -65,8 +63,12 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future addUserDetails(
       String email, String phone, String adress, String name) async {
-    await FirebaseFirestore.instance.collection('users').add(
-        {"email": email, "phone_number": phone, "name": name, "address": adress,});
+    await FirebaseFirestore.instance.collection('users').add({
+      "email": email,
+      "phone_number": phone,
+      "name": name,
+      "address": adress,
+    });
   }
 
   @override
@@ -95,15 +97,22 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 height: 30,
               ),
-
               CustomTextField(text: "name", textController: _nameController),
-              CustomTextField(text: "address", textController: _adressController),
+              CustomTextField(
+                  text: "address", textController: _adressController),
               CustomTextField(text: "email", textController: _emailController),
-              CustomTextField(text: "phone number", textController: _phoneController),
-              CustomTextField(text: "password", textController: _passWordController, obscure: true,),
-              SizedBox(height: 10,),
+              CustomTextField(
+                  text: "phone number", textController: _phoneController),
+              CustomTextField(
+                text: "password",
+                textController: _passWordController,
+                obscure: true,
+              ),
+              SizedBox(
+                height: 10,
+              ),
               GestureDetector(
-                onTap: ()=> createUser(),
+                onTap: () => createUser(),
                 child: CustomCreateButton(text: "SignUp"),
               ),
               SizedBox(
@@ -111,7 +120,10 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
-                child: CustomCreateButton(text: "Back To Login", gradient: true,),
+                child: CustomCreateButton(
+                  text: "Back To Login",
+                  gradient: true,
+                ),
               ),
             ],
           ),

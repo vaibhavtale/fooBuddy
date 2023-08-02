@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_button.dart';
+import 'package:foodbuddy/components/profile_with_icon.dart';
 import 'package:foodbuddy/pages/edit_profile_page.dart';
-import 'package:image_picker/image_picker.dart';
-import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,29 +15,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
-  File? image;
-  Future _takePhotoFromGallery(ImageSource source) async {
-    final image = await ImagePicker().pickImage(source: source);
-    if (image == null) return;
-
-    final imageTemporary = File(image.path);
-    try {
-      setState(() {
-        this.image = imageTemporary;
-      });
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   bool _loading = false;
+  File? image;
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: Colors.white54,
       body: SafeArea(
@@ -56,29 +41,23 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            _ProfileIconWithName(
+                            ProfileIconWithName(
                               name: data['name'],
-                              profileImage: image != null
-                                  ? Image.file(
-                                      image!,
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      "https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg",
-                                      width: 100,
-                                      height: 100,
-                                    ),
+                              imageUrl: image != null
+                                  ? image!.path
+                                  : "https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg",
                               email: data['email'],
-                              onTap: (){_takePhotoFromGallery(ImageSource.gallery);}  ,
+                              onTap: () {},
                             ),
                             Column(
                               children: [
                                 CustomBtn(
                                   text: "Edit profile",
                                   onTap: () {
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfile()));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditProfile(data: data)));
                                   },
                                   icon: Icons.edit,
                                   loading: _loading,
@@ -123,66 +102,6 @@ class _ProfilePageState extends State<ProfilePage> {
               return const Center(child: CircularProgressIndicator());
             }),
       ),
-    );
-  }
-}
-
-void _editProfileInfo() {}
-
-class _ProfileIconWithName extends StatelessWidget {
-  final String name;
-  final Image profileImage;
-  final String email;
-  final VoidCallback onTap;
-
-  const _ProfileIconWithName(
-      {required this.name,
-      required this.profileImage,
-      required this.email,
-      required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Stack(
-          children: [
-            ClipOval(
-              child: profileImage,
-            ),
-            Positioned(
-              child: IconButton(
-                color: Colors.blueAccent,
-                icon: Icon(Icons.add_a_photo, color: Colors.white, size: 25,), onPressed: onTap,
-              ),
-              right: 10,
-              bottom: 10,
-            )
-          ],
-        ),
-        const SizedBox(height: 15),
-        Text(
-          name,
-          style: const TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(
-          height: 5,
-        ),
-        Text(
-          email,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w300,
-          ),
-        ),
-        SizedBox(
-          height: 30,
-        ),
-      ],
     );
   }
 }

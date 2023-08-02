@@ -12,9 +12,7 @@ class _HotelsState extends State<Hotels> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
-        children: [
-
-        ],
+        children: [],
       ),
     );
   }

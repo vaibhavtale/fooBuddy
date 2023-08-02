@@ -11,8 +11,8 @@ class HotelStyle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => Navigator.push(context,
-            MaterialPageRoute(builder: (context) => MenuPage())),
+        onTap: () => Navigator.push(
+            context, MaterialPageRoute(builder: (context) => MenuPage())),
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [
@@ -48,12 +48,10 @@ class HotelStyle extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
-
                   Divider(
                     color: Colors.white24,
                     height: 7,
                   ),
-
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/menu_item_page.dart';
+
 import 'menu_card.dart';
 
 class MyMenuStyle extends StatefulWidget {
   final MenuCard menuCard;
+
   const MyMenuStyle({Key? key, required this.menuCard}) : super(key: key);
 
   @override
@@ -15,7 +17,8 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MenuItemPage(menuCard: widget.menuCard))),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MenuItemPage(menuCard: widget.menuCard))),
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [
@@ -24,8 +27,8 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               height: MediaQuery.of(context).size.height * 0.23,
               width: 350,
               decoration: BoxDecoration(
-                // color: Colors.red
-              ),
+                  // color: Colors.red
+                  ),
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
@@ -57,13 +60,15 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                               color: Colors.black),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text("\$" + widget.menuCard.price.toString(), style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),),
+                        child: Text(
+                          "\$" + widget.menuCard.price.toString(),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
                       )
                     ],
                   ),
@@ -73,6 +78,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
           ],
         ),
       ),
-    );;
+    );
+    ;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/menu_card.dart';
+
 import '../components/menu_style.dart';
 
 class SearchScreenPage extends StatefulWidget {
@@ -17,9 +18,8 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
       return [];
     } else {
       return menuList
-          .where((menu) => menu.foodName
-              .toLowerCase()
-              .contains(searchQuery.toLowerCase()))
+          .where((menu) =>
+              menu.foodName.toLowerCase().contains(searchQuery.toLowerCase()))
           .toList();
     }
   }
@@ -82,7 +82,9 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                 itemCount: filteredMenuList().length,
                 itemBuilder: (context, index) {
                   MenuCard menuCard = filteredMenuList()[index];
-                  return MyMenuStyle(menuCard: menuCard,);
+                  return MyMenuStyle(
+                    menuCard: menuCard,
+                  );
                 },
               ),
             ),

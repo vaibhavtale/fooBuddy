@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
+
 import '../components/hotel_style.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,7 +17,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: CustomGradientText(text: "FoodBuddy Online",),
+        title: CustomGradientText(
+          text: "FoodBuddy Online",
+        ),
         actions: [
           IconButton(
             onPressed: () => {},

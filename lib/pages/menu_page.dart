@@ -10,7 +10,6 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-
   String searchQuery = '';
 
   List<MenuCard> filteredMenuList() {
@@ -18,9 +17,8 @@ class _MenuPageState extends State<MenuPage> {
       return menuList;
     } else {
       return menuList
-          .where((menu) => menu.foodName
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase()))
+          .where((menu) =>
+              menu.foodName.toLowerCase().contains(searchQuery.toLowerCase()))
           .toList();
     }
   }
@@ -63,19 +61,24 @@ class _MenuPageState extends State<MenuPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(Icons.search, size: 30, color: Colors.black,),
+                          child: Icon(
+                            Icons.search,
+                            size: 30,
+                            color: Colors.black,
+                          ),
                         ),
-                        SizedBox(width: 5,),
+                        SizedBox(
+                          width: 5,
+                        ),
                         Expanded(
                           child: TextField(
-                            onChanged: (value){
+                            onChanged: (value) {
                               setState(() {
                                 searchQuery = value;
                               });
                             },
-                            decoration: InputDecoration(
-                              border: InputBorder.none
-                            ),
+                            decoration:
+                                InputDecoration(border: InputBorder.none),
                           ),
                         )
                       ],
