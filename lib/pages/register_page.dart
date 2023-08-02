@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/components/custom_gradient_text.dart';
+import 'package:foodbuddy/components/custom_textfield.dart';
 import 'package:foodbuddy/pages/profile_page.dart';
 import 'package:foodbuddy/pages/toggle_page.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
@@ -80,17 +82,10 @@ class _RegisterPageState extends State<RegisterPage> {
               SizedBox(
                 height: 30,
               ),
-              GradientText(
-                "Welcome Buddy",
-                style: TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                ),
-                colors: [Colors.red, Colors.orange],
-              ),
               SizedBox(
                 height: 10,
               ),
+              CustomGradientText(text: "Welcome Buddy"),
               Center(
                 child: Text(
                   "Create A New Account",
@@ -98,176 +93,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: TextField(
-                      controller: _nameController,
-                      decoration: InputDecoration(
-                        hintText: "Name..",
-                        hintStyle: TextStyle(fontSize: 20),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: TextField(
-                      controller: _adressController,
-                      decoration: InputDecoration(
-                        hintText: "Adress...",
-                        hintStyle: TextStyle(fontSize: 20),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        hintText: "Email...",
-                        hintStyle: TextStyle(fontSize: 20),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: TextField(
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                        hintText: "Phone...",
-                        hintStyle: TextStyle(fontSize: 20),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: TextField(
-                      controller: _passWordController,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        hintStyle: TextStyle(fontSize: 20),
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
+
+              CustomTextField(text: "name", textController: _nameController),
+              CustomTextField(text: "address", textController: _adressController),
+              CustomTextField(text: "email", textController: _emailController),
+              CustomTextField(text: "phone number", textController: _phoneController),
+              CustomTextField(text: "password", textController: _passWordController, obscure: true,),
+              SizedBox(height: 10,),
               GestureDetector(
                 onTap: ()=> createUser(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(
-                        colors: [Colors.red, Colors.orangeAccent],
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight),
-                  ),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-                    child: Text(
-                      "Create Account",
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+                child: CustomCreateButton(text: "SignUp"),
               ),
               SizedBox(
                 height: 20,
               ),
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.black,
-                      )),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 95, vertical: 15),
-                    child: Text(
-                      "Back To Login",
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
+                child: CustomCreateButton(text: "Back To Login", gradient: true,),
               ),
             ],
           ),

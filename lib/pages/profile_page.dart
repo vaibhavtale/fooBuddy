@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_button.dart';
-import 'package:foodbuddy/pages/user_cart_page.dart';
+import 'package:foodbuddy/pages/edit_profile_page.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -12,12 +14,29 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  File? image;
+  Future _takePhotoFromGallery(ImageSource source) async {
+    final image = await ImagePicker().pickImage(source: source);
+    if (image == null) return;
+
+    final imageTemporary = File(image.path);
+    try {
+      setState(() {
+        this.image = imageTemporary;
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   bool _loading = false;
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white54,
       body: SafeArea(
@@ -39,15 +58,28 @@ class _ProfilePageState extends State<ProfilePage> {
                           children: [
                             _ProfileIconWithName(
                               name: data['name'],
-                              profileImage: data['image_url'],
+                              profileImage: image != null
+                                  ? Image.file(
+                                      image!,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.network(
+                                      "https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg",
+                                      width: 100,
+                                      height: 100,
+                                    ),
                               email: data['email'],
+                              onTap: (){_takePhotoFromGallery(ImageSource.gallery);}  ,
                             ),
-
                             Column(
                               children: [
                                 CustomBtn(
                                   text: "Edit profile",
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfile()));
+                                  },
                                   icon: Icons.edit,
                                   loading: _loading,
                                 ),
@@ -99,20 +131,35 @@ void _editProfileInfo() {}
 
 class _ProfileIconWithName extends StatelessWidget {
   final String name;
-  final String profileImage;
+  final Image profileImage;
   final String email;
+  final VoidCallback onTap;
 
   const _ProfileIconWithName(
-      {required this.name, required this.profileImage, required this.email});
+      {required this.name,
+      required this.profileImage,
+      required this.email,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CircleAvatar(
-          radius: 60,
-          backgroundImage: NetworkImage(profileImage),
+        Stack(
+          children: [
+            ClipOval(
+              child: profileImage,
+            ),
+            Positioned(
+              child: IconButton(
+                color: Colors.blueAccent,
+                icon: Icon(Icons.add_a_photo, color: Colors.white, size: 25,), onPressed: onTap,
+              ),
+              right: 10,
+              bottom: 10,
+            )
+          ],
         ),
         const SizedBox(height: 15),
         Text(
@@ -132,63 +179,10 @@ class _ProfileIconWithName extends StatelessWidget {
             fontWeight: FontWeight.w300,
           ),
         ),
-        const SizedBox(
+        SizedBox(
           height: 30,
         ),
       ],
     );
   }
-}
-
-class _profileOptions extends StatelessWidget {
-  final Icon icon;
-  final String text;
-  final String tail;
-
-  const _profileOptions(
-      {Key? key, required this.text, required this.icon, required this.tail})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        icon,
-        const SizedBox(
-          width: 20,
-        ),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w300),
-        ),
-        const SizedBox(
-          width: 100,
-        ),
-        Expanded(
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            children: [
-              Text(
-                tail,
-                style: const TextStyle(fontSize: 13),
-                maxLines: null, // Allow the text to wrap to multiple lines
-              ),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-}
-
-void _showUserCart(BuildContext context) {
-  Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const UserCart(),
-    ),
-  );
-}
-
-Future _logOut() async {
-  await FirebaseAuth.instance.signOut();
 }

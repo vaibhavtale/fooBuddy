@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/components/custom_gradient_text.dart';
+import 'package:foodbuddy/components/custom_textfield.dart';
 import 'package:foodbuddy/pages/register_page.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -58,14 +60,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 30,
             ),
-            GradientText(
-              "Hey Buddy",
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-              colors: [Colors.orangeAccent, Colors.redAccent],
-            ),
+            CustomGradientText(text: 'Hey Buddy',),
             SizedBox(
               height: 25,
             ),
@@ -86,83 +81,16 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             SizedBox(
-              height: 40,
+              height: 30,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      hintText: "Email...",
-                      hintStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[600]),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            CustomTextField(text: "email", textController: _emailController),
+            CustomTextField(text: "password", textController: _passWordController, obscure: true,),
             SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  child: TextField(
-                    controller: _passWordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: "Password...",
-                      hintStyle: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey[600]),
-                      border: InputBorder.none,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 20,
+              height: 10,
             ),
             GestureDetector(
               onTap: () => signIn(),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    gradient: LinearGradient(colors: [
-                      Colors.orangeAccent,
-                      Colors.deepOrangeAccent,
-                    ], begin: Alignment.bottomLeft, end: Alignment.topRight)),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 120, vertical: 15),
-                  child: Text(
-                    "Login",
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
+              child: CustomCreateButton(text: "Login"),
             ),
             SizedBox(
               height: 20,
@@ -240,23 +168,7 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterPage())),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.black,
-                    )),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 70, vertical: 15),
-                  child: Text(
-                    "Create New Account",
-                    style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
+              child: CustomCreateButton(text: 'Create New Account', gradient: true,),
             ),
           ],
         ),

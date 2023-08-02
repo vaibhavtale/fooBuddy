@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import '../components/hotel_style.dart';
@@ -16,14 +17,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: GradientText(
-          "FoodBuddy Online",
-          style: const TextStyle(
-              // color: Colors.red[400],
-              fontWeight: FontWeight.bold,
-              fontSize: 30),
-          colors: [Colors.pinkAccent, Colors.orangeAccent],
-        ),
+        title: CustomGradientText(text: "FoodBuddy Online",),
         actions: [
           IconButton(
             onPressed: () => {},
