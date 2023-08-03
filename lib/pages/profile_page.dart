@@ -48,6 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   : "https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg",
                               email: data['email'],
                               onTap: () {},
+                              isEditable: false,
                             ),
                             Column(
                               children: [

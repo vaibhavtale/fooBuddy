@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
+import 'package:foodbuddy/pages/user_cart_page.dart';
 
 import '../components/hotel_style.dart';
 
@@ -22,7 +23,10 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () => {},
+            onPressed: () => {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => UserCart()))
+            },
             icon: Container(
               decoration: BoxDecoration(color: Colors.black),
               child: Icon(Icons.add),

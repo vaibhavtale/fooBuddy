@@ -4,6 +4,7 @@ class ProfileIconWithName extends StatelessWidget {
   final String name;
   final String imageUrl;
   final String email;
+  final bool isEditable;
   final VoidCallback onTap;
 
   const ProfileIconWithName(
@@ -11,7 +12,8 @@ class ProfileIconWithName extends StatelessWidget {
       required this.name,
       required this.imageUrl,
       required this.email,
-      required this.onTap});
+      required this.onTap,
+      required this.isEditable});
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +23,32 @@ class ProfileIconWithName extends StatelessWidget {
         Stack(
           children: [
             ClipOval(
-              child: Image.network(imageUrl, height: 100, width: 100, fit: BoxFit.cover,),
-            ),
-            Positioned(
-              right: 10,
-              bottom: 10,
-              child: IconButton(
-                color: Colors.blueAccent,
-                icon: const Icon(
-                  Icons.add_a_photo,
-                  color: Colors.white,
-                  size: 25,
-                ),
-                onPressed: onTap,
+              child: Image.network(
+                imageUrl,
+                height: 100,
+                width: 100,
+                fit: BoxFit.cover,
               ),
-            )
+            ),
+            if (isEditable)
+              Positioned(
+                right: -1,
+                bottom: 6,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(360)),
+                  child: IconButton(
+                    color: Colors.blueAccent,
+                    icon: const Icon(
+                      Icons.add_a_photo,
+                      color: Colors.white,
+                      size: 25,
+                    ),
+                    onPressed: onTap,
+                  ),
+                ),
+              )
           ],
         ),
         const SizedBox(height: 15),

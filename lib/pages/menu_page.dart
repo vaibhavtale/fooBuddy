@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/menu_card.dart';
 import 'package:foodbuddy/components/menu_style.dart';
+import 'package:foodbuddy/pages/user_cart_page.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -29,6 +30,9 @@ class _MenuPageState extends State<MenuPage> {
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         elevation: 0,
+        actions: [
+          IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserCart())), icon: Icon(Icons.shopping_cart, color: Colors.black, size: 20,))
+        ],
       ),
       body: Stack(
         alignment: Alignment.bottomCenter,

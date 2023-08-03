@@ -1,7 +1,9 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/profile_with_icon.dart';
@@ -13,7 +15,7 @@ import '../components/custom_textfield.dart';
 class EditProfile extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  const EditProfile({Key? key, required this.data}) : super(key: key);
+  EditProfile({Key? key, required this.data}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -24,10 +26,10 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  File? image;
+  XFile? image;
+  XFile? picked;
 
   @override
   void initState() {
@@ -64,10 +66,14 @@ class _EditProfileState extends State<EditProfile> {
 
   Future _takePhotoFromGallery(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
+
     if (image == null) return;
 
     try {
-      final imageTemporary = File(image.path);
+      final imageTemporary = XFile(image.path);
+      print(imageTemporary.path);
+
+      _uploadImage(imageTemporary);
       setState(() {
         this.image = imageTemporary;
       });
@@ -76,10 +82,26 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  _uploadImage() async {
+  _uploadImage(XFile imageTemporary) async {
+    // if (picked == null) return;
+
+    String _uniqueaddress = DateTime.now().millisecondsSinceEpoch.toString();
+
+    Reference referenceRoot = FirebaseStorage.instance.ref();
+    Reference dirImages = referenceRoot.child('user');
+
+    Reference imageToUpload = dirImages.child(_uniqueaddress);
+
+    try {
+      imageToUpload.putFile(File(imageTemporary.path));
+      print("mission succesful");
+    } catch (e) {
+      print(e.toString());
+    }
+
     // TODO: Upload image to Firebase Storage
     // url apply to user data
-    // url will be stored in user(folder) -> uil (folder) -> profile(file)
+    // url will be stored in user(folder) -> url (folder) -> profile(file)
   }
 
   @override
@@ -103,11 +125,13 @@ class _EditProfileState extends State<EditProfile> {
             ),
             const CustomGradientText(text: "Edit Profile"),
             ProfileIconWithName(
-                name: _nameController.text,
-                imageUrl: image?.path ??
-                    'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
-                email: widget.data['email'],
-                onTap: () => _takePhotoFromGallery(ImageSource.gallery)),
+              name: _nameController.text,
+              imageUrl: image?.path ??
+                  'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
+              email: widget.data['email'],
+              onTap: () => _takePhotoFromGallery(ImageSource.gallery),
+              isEditable: true,
+            ),
             const SizedBox(
               height: 30,
             ),
