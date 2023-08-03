@@ -34,7 +34,6 @@ class _UserCartState extends State<UserCart> {
                     style: TextStyle(color: Colors.redAccent),
                   ),
                   trailing: IconButton(
-                    icon: IconButton(
                       icon: Icon(Icons.delete),
                       color: Colors.redAccent,
                       onPressed: () {
@@ -42,8 +41,6 @@ class _UserCartState extends State<UserCart> {
                           userCartList.remove(userCartList[index]);
                         });
                       },
-                    ),
-                    onPressed: () {},
                   ),
                 ),
               ),

@@ -90,7 +90,9 @@ class _EditProfileState extends State<EditProfile> {
           .where('email', isEqualTo: _auth.currentUser!.email)
           .get();
 
+
       final docId = docs.docs.first.id;
+      print(docId);
       await _firestore.collection('users').doc(docId).update(userData);
 
       Navigator.of(context).pop();
