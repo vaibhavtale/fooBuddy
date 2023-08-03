@@ -1,9 +1,8 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/profile_with_icon.dart';
@@ -22,14 +21,15 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
-  final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  XFile? image;
-  XFile? picked;
+  File? image;
+  String imageUrl = '';
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,68 +40,65 @@ class _EditProfileState extends State<EditProfile> {
     super.initState();
   }
 
-  void _updateUserData() async {
-    final userData = {
-      'name': _nameController.text.trim(),
-      'address': _addressController.text.trim(),
-      'email': _emailController.text.trim(),
-      'phone_number': _phoneController.text.trim(),
-    };
-
-    try {
-      // Update the Firestore document
-      await _firestore
-          .collection('users')
-          .doc(_auth.currentUser!.uid)
-          .update(userData);
-
-      // Print a success message
-      Navigator.of(context).pop();
-      showMessage(
-          context, 'Success Your profile has been updated successfully');
-    } catch (e) {
-      showMessage(context, "Error updating profile: $e");
-    }
-  }
-
-  Future _takePhotoFromGallery(ImageSource source) async {
+  Future<void> _takePhotoFromGallery(ImageSource source) async {
     final image = await ImagePicker().pickImage(source: source);
-
     if (image == null) return;
 
     try {
-      final imageTemporary = XFile(image.path);
-      print(imageTemporary.path);
-
-      _uploadImage(imageTemporary);
       setState(() {
-        this.image = imageTemporary;
+        this.image = File(image.path);
       });
     } catch (e) {
       showMessage(context, "Error picking image: $e");
     }
   }
 
-  _uploadImage(XFile imageTemporary) async {
-    // if (picked == null) return;
-
-    String _uniqueaddress = DateTime.now().millisecondsSinceEpoch.toString();
+  Future<void> _uploadImage() async {
+    if (image == null) return;
 
     Reference referenceRoot = FirebaseStorage.instance.ref();
-    Reference dirImages = referenceRoot.child('user');
-
-    Reference imageToUpload = dirImages.child(_uniqueaddress);
+    Reference imagePath = referenceRoot
+        .child('user')
+        .child(_auth.currentUser!.uid)
+        .child('profile_image');
 
     try {
-      imageToUpload.putFile(File(imageTemporary.path));
-      print("mission succesful");
+      await imagePath.putFile(image!);
+      imageUrl = await imagePath.getDownloadURL();
     } catch (e) {
-      print(e.toString());
+      showMessage(context, "Error uploading image: $e");
     }
+  }
 
-    // TODO: Upload image to Firebase Storage
-    // url apply to user data
-    // url will be stored in user(folder) -> url (folder) -> profile(file)
+  Future<void> _updateUserData() async {
+    await _uploadImage();
+    final userData = {
+      'name': _nameController.text.trim(),
+      'address': _addressController.text.trim(),
+      'phone_number': _phoneController.text.trim(),
+      if (imageUrl != '') 'image_url': imageUrl,
+    };
+
+    try {
+      // await _firestore
+      //     .collection('users')
+      //     .doc(_auth.currentUser!.uid)
+      //     .update(userData);
+
+      final docs = await _firestore
+          .collection('users')
+          .where('email', isEqualTo: _auth.currentUser!.email)
+          .get();
+
+      final docId = docs.docs.first.id;
+      await _firestore.collection('users').doc(docId).update(userData);
+
+      Navigator.of(context).pop();
+      showMessage(
+          context, 'Success Your profile has been updated successfully');
+    } catch (e) {
+      showMessage(context, "Error updating profile: $e");
+    }
   }
 
   @override
@@ -120,39 +117,49 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 80,
-            ),
+            const SizedBox(height: 80),
             const CustomGradientText(text: "Edit Profile"),
             ProfileIconWithName(
-              name: _nameController.text,
-              imageUrl: image?.path ??
-                  'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
-              email: widget.data['email'],
-              onTap: () => _takePhotoFromGallery(ImageSource.gallery),
-              isEditable: true,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
+                name: _nameController.text,
+                imageUrl: image?.path ??
+                    'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
+                email: widget.data['email'],
+                onTap: () async {
+                  if (!_isLoading) {
+                    _isLoading = true;
+                    await _takePhotoFromGallery(ImageSource.gallery);
+                    _isLoading = false;
+                  }
+                },
+                isEditable: true),
+            const SizedBox(height: 30),
             CustomTextField(text: "name", textController: _nameController),
             CustomTextField(
                 text: "address", textController: _addressController),
             CustomTextField(text: "email", textController: _emailController),
             CustomTextField(
                 text: "phone number", textController: _phoneController),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             GestureDetector(
-              onTap: () => _updateUserData(),
-              child: const CustomCreateButton(text: "Apply Changes"),
-            ),
+                onTap: () async {
+                  if (!_isLoading) {
+                    setState(() {
+                      _isLoading = true;
+                    });
+                    await _updateUserData();
+                    setState(() {
+                      _isLoading = false;
+                    });
+                  }
+                },
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const CustomCreateButton(text: "Apply Changes")),
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: const CustomCreateButton(text: "Cancel", gradient: true),
-            ),
+                onTap: () => Navigator.of(context).pop(),
+                child:
+                    const CustomCreateButton(text: "Cancel", gradient: true)),
           ],
         ),
       ),
