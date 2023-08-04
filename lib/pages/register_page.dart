@@ -71,6 +71,8 @@ class _RegisterPageState extends State<RegisterPage> {
       "phone_number": phone,
       "name": name,
       "address": address,
+      "userCart" : [],
+      "savedItems" : [],
     });
   }
 
@@ -116,14 +118,14 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
               GestureDetector(
                 onTap: () => createUser(),
-                child: CustomCreateButton(text: "SignUp"),
+                child: CustomGradientButton(text: "SignUp"),
               ),
               SizedBox(
                 height: 20,
               ),
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
-                child: CustomCreateButton(
+                child: CustomGradientButton(
                   text: "Back To Login",
                   gradient: true,
                 ),

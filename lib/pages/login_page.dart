@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             GestureDetector(
               onTap: () => signIn(),
-              child: CustomCreateButton(text: "Login"),
+              child: CustomGradientButton(text: "Login"),
             ),
             SizedBox(
               height: 20,
@@ -174,7 +174,7 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () => Navigator.push(context,
                   MaterialPageRoute(builder: (context) => RegisterPage())),
-              child: CustomCreateButton(
+              child: CustomGradientButton(
                 text: 'Create New Account',
                 gradient: true,
               ),

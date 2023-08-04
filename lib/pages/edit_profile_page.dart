@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -7,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/profile_with_icon.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../components/custom_gradient_text.dart';
 import '../components/custom_textfield.dart';
 
@@ -90,7 +88,6 @@ class _EditProfileState extends State<EditProfile> {
           .where('email', isEqualTo: _auth.currentUser!.email)
           .get();
 
-
       final docId = docs.docs.first.id;
       print(docId);
       await _firestore.collection('users').doc(docId).update(userData);
@@ -119,8 +116,8 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(height: 80),
-            const CustomGradientText(text: "Edit Profile"),
+            SizedBox(height: 80),
+            CustomGradientText(text: "Edit Profile"),
             ProfileIconWithName(
                 name: _nameController.text,
                 imageUrl: image?.path ??
@@ -134,34 +131,35 @@ class _EditProfileState extends State<EditProfile> {
                   }
                 },
                 isEditable: true),
-            const SizedBox(height: 30),
+            SizedBox(height: 30),
             CustomTextField(text: "name", textController: _nameController),
             CustomTextField(
                 text: "address", textController: _addressController),
             CustomTextField(text: "email", textController: _emailController),
             CustomTextField(
                 text: "phone number", textController: _phoneController),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             GestureDetector(
-                onTap: () async {
-                  if (!_isLoading) {
-                    setState(() {
-                      _isLoading = true;
-                    });
-                    await _updateUserData();
-                    setState(() {
-                      _isLoading = false;
-                    });
-                  }
-                },
-                child: _isLoading
-                    ? const CircularProgressIndicator()
-                    : const CustomCreateButton(text: "Apply Changes")),
-            const SizedBox(height: 20),
+              onTap: () async {
+                if (!_isLoading) {
+                  setState(() {
+                    _isLoading = true;
+                  });
+                  await _updateUserData();
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              },
+              child: _isLoading
+                  ? const CircularProgressIndicator()
+                  : const CustomGradientButton(text: "Apply Changes"),
+            ),
+            SizedBox(height: 20),
             GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child:
-                    const CustomCreateButton(text: "Cancel", gradient: true)),
+              onTap: () => Navigator.of(context).pop(),
+              child: CustomGradientButton(text: "Cancel", gradient: true),
+            ),
           ],
         ),
       ),

@@ -1,13 +1,13 @@
 class MenuCard {
   final String imagePath;
   final String foodName;
-  final bool nonVeg;
+  final bool isNonVeg;
   final int price;
 
   MenuCard(
       {required this.imagePath,
       required this.foodName,
-      required this.nonVeg,
+      required this.isNonVeg,
       required this.price});
 }
 
@@ -15,72 +15,72 @@ List<MenuCard> menuList = [
   MenuCard(
       imagePath: "images/paneer1.jpg",
       foodName: "paneer masala",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/ice_cream1.jpg",
       foodName: "ice_cream vanila",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/roll1.jpg",
       foodName: "chicken roll",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/biryani1.jpg",
       foodName: "biryani",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/dumpling1.jpg",
       foodName: "dumpling veg",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/pizza1.jpg",
       foodName: "pizza slicy",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/dumpling2.jpg",
       foodName: "dumpling non veg",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/donat1.jpg",
       foodName: "donat choco-cream",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/ice_cream2.jpg",
       foodName: "ice_cream choco",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/roll2.jpg",
       foodName: "chicken roll spicy",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/biryani2.jpg",
       foodName: "chicken biryani",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/dumpling3.jpg",
       foodName: "dumpling veg",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
   MenuCard(
       imagePath: "images/chicken1.jpg",
       foodName: "chicken curry",
-      nonVeg: true,
+      isNonVeg: true,
       price: 150),
   MenuCard(
       imagePath: "images/dumpling4.jpg",
       foodName: "dumpling",
-      nonVeg: false,
+      isNonVeg: false,
       price: 150),
 ];
 

@@ -21,11 +21,11 @@ class CustomGradientText extends StatelessWidget {
 
 // Custom button for user creation, login, create user, update data.....
 
-class CustomCreateButton extends StatelessWidget {
+class CustomGradientButton extends StatelessWidget {
   final String text;
   final bool? gradient;
 
-  const CustomCreateButton({Key? key, required this.text, this.gradient})
+  const CustomGradientButton({Key? key, required this.text, this.gradient})
       : super(key: key);
 
   @override
@@ -59,3 +59,29 @@ class CustomCreateButton extends StatelessWidget {
     );
   }
 }
+
+//Button used to add items to cart
+
+class CustomNonGradientButton extends StatelessWidget {
+  final Function onTap;
+  final String text;
+  const CustomNonGradientButton({Key? key, required this.onTap, required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.deepOrange,
+          borderRadius: BorderRadius.circular(15)),
+      width: 300,
+      height: 60,
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(fontSize: 22, color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
