@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:foodbuddy/pages/menu_page.dart';
@@ -9,10 +10,31 @@ class HotelStyle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    void _getDocumentId(HotelCard hotelCard) async {
+      final docs = await FirebaseFirestore.instance
+          .collection('hotels')
+          .where('name', isEqualTo: hotelCard.restaurantName)
+          .get();
+
+      final docId = docs.docs.first.id;
+      print(docId);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MenuPage(
+            hotelId: docId,
+          ),
+        ),
+      );
+    }
+
     return Center(
       child: GestureDetector(
-        onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuPage())),
+        onTap: () {
+          _getDocumentId(hotelCard);
+        },
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [
