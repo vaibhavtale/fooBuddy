@@ -112,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 10,
             ),
             GestureDetector(
-              onTap: () => signInWithGoogle(),
+              onTap: () => signIn(),
               child: CustomGradientButton(text: "Login"),
             ),
             SizedBox(
