@@ -60,11 +60,11 @@ class _HomePageState extends State<HomePage> {
             String? customID;
             _getDocumentId(hotelcard, customID);
 
-            _firestore.collection('hotels').doc(customID).collection('menu');
+            // _firestore.collection('hotels').doc(customID).collection('menu').add;
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: HotelStyle(hotelCard: hotelcard),
+              child: HotelStyle(hotelCard: hotelcard,),
             );
           }),
       // bottomNavigationBar: MyNavigationBar(),

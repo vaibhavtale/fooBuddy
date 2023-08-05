@@ -1,18 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:foodbuddy/pages/menu_page.dart';
 
+import 'custom_methods.dart';
+
 class HotelStyle extends StatelessWidget {
   final HotelCard hotelCard;
 
-  const HotelStyle({Key? key, required this.hotelCard}) : super(key: key);
+  const HotelStyle({Key? key, required this.hotelCard,})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Center(
       child: GestureDetector(
         onTap: () => Navigator.push(
-            context, MaterialPageRoute(builder: (context) => MenuPage())),
+            context,
+            MaterialPageRoute(
+                builder: (context) => MenuPage(
+                      hotelCard: hotelCard,
+                    ))),
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [

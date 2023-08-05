@@ -16,7 +16,7 @@ List<HotelCard> hotelList = [
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f2.jpg",
-      restaurantName: "Couple Corner",
+      restaurantName: "friends corner",
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f3.jpg",
@@ -24,11 +24,11 @@ List<HotelCard> hotelList = [
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f4.jpg",
-      restaurantName: "Couple Corner",
+      restaurantName: "Dwaraka Restaurant",
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f3.jpg",
-      restaurantName: "Hotel Martand",
+      restaurantName: "Matoshree Restaurant",
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f5.jpg",
@@ -36,6 +36,6 @@ List<HotelCard> hotelList = [
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f1.jpg",
-      restaurantName: "Hotel Martand",
+      restaurantName: "Hotel Maratha",
       isNonVeg: false),
 ];

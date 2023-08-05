@@ -17,6 +17,23 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _resetPasswordController =
       TextEditingController();
 
+  Future<UserCredential> signInWithGoogle() async {
+    // Create a new provider
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+    googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    googleProvider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+
+    // Or use signInWithRedirect
+    // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+  }
+
+
   Future<User?> signIn() async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -26,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       showDialog(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Please enter valid credentials."),
         ),
       );
@@ -95,11 +112,12 @@ class _LoginPageState extends State<LoginPage> {
               height: 10,
             ),
             GestureDetector(
-              onTap: () => signIn(),
+              onTap: () => signInWithGoogle(),
               child: CustomGradientButton(text: "Login"),
             ),
             SizedBox(
-              height: 20,
+              height: 7
+              ,
             ),
             GestureDetector(
               onTap: () {
@@ -155,17 +173,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    color: Colors.grey[300]),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                  child: Text(
-                    "Forgot Password?",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                ),
+              child: Text(
+                "Forgot Password?",
+                style: TextStyle(fontSize: 18, color: Colors.blueAccent),
               ),
             ),
             SizedBox(

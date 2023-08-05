@@ -1,10 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:foodbuddy/components/menu_card.dart';
 import 'package:foodbuddy/components/menu_style.dart';
 import 'package:foodbuddy/pages/user_cart_page.dart';
 
+import '../components/custom_methods.dart';
+
 class MenuPage extends StatefulWidget {
-  const MenuPage({Key? key}) : super(key: key);
+  final HotelCard hotelCard;
+  const MenuPage({Key? key, required this.hotelCard,}) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -12,6 +17,29 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   String searchQuery = '';
+  CollectionReference hotelCollection = FirebaseFirestore.instance.collection('hotel');
+  final _firestore =  FirebaseFirestore.instance;
+
+  /*Future<void> _updateUserData(MenuCard menuCard) async {
+    try {
+
+      await _firestore.collection('hotels').doc(widget.hotelId).collection('menu').add(
+          {
+            'name' : menuCard.foodName,
+            'hotel_id' : widget.hotelId,
+            'price': menuCard.price,
+            'image_url' : menuCard.imagePath,
+            'isNonVeg' : menuCard.isNonVeg,
+          }
+      );
+
+      Navigator.of(context).pop();
+      showMessage(
+          context, 'Success menu collection added succesfully successfully');
+    } catch (e) {
+      showMessage(context, "Error adding menu collection: $e");
+    }
+  }*/
 
   List<MenuCard> filteredMenuList() {
     if (searchQuery.isEmpty) {
@@ -42,7 +70,7 @@ class _MenuPageState extends State<MenuPage> {
             itemBuilder: (context, index) {
               MenuCard menuCard = filteredMenuList()[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20),
                 child: MyMenuStyle(menuCard: menuCard),
               );
             },
@@ -63,15 +91,15 @@ class _MenuPageState extends State<MenuPage> {
                     ),
                     child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           child: Icon(
                             Icons.search,
                             size: 30,
                             color: Colors.black,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         Expanded(
