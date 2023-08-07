@@ -6,8 +6,7 @@ import 'package:foodbuddy/pages/user_cart_page.dart';
 
 class MenuPage extends StatefulWidget {
   final String hotelId;
-
-  MenuPage({Key? key, required this.hotelId}) : super(key: key);
+  const MenuPage({Key? key, required this.hotelId}) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -27,8 +26,6 @@ class _MenuPageState extends State<MenuPage> {
     };
 
     // Get a reference to the "hotels" collection
-    CollectionReference hotelsCollection =
-        FirebaseFirestore.instance.collection('hotels');
 
     try {
       // Get a reference to the specific hotel document using the provided hotelId
@@ -52,90 +49,122 @@ class _MenuPageState extends State<MenuPage> {
       return menuList;
     } else {
       return menuList
-          .where((menu) =>
-              menu.foodName.toLowerCase().contains(searchQuery.toLowerCase()))
+          .where(
+            (menu) => menu.foodName.toLowerCase().contains(
+                  searchQuery.toLowerCase(),
+                ),
+          )
           .toList();
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    CollectionReference menuCollection = FirebaseFirestore.instance
+        .collection('hotels')
+        .doc(widget.hotelId)
+        .collection('menu');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         elevation: 0,
         actions: [
           IconButton(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UserCart())),
-              icon: Icon(
-                Icons.shopping_cart,
-                color: Colors.black,
-                size: 20,
-              ))
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserCart(),
+              ),
+            ),
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.black,
+              size: 20,
+            ),
+          ),
         ],
       ),
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        children: [
-          ListView.builder(
-            itemCount: filteredMenuList().length,
-            itemBuilder: (context, index) {
-              MenuCard menuCard = filteredMenuList()[index];
-              //addMenuToHotel(widget.hotelId, menuCard);
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: MyMenuStyle(menuCard: menuCard),
-              );
-            },
-          ),
-          Container(
-            height: 80,
-            color: Colors.grey[400],
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
-                  child: Container(
-                    height: 50,
-                    width: 270,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.white70,
-                    ),
+      body: FutureBuilder<QuerySnapshot>(
+          future: menuCollection.get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot hotelDocument =
+                          snapshot.data!.docs[index];
+                      Map<String, dynamic> hotelData =
+                          hotelDocument.data() as Map<String, dynamic>;
+                      print(hotelData);
+
+                      // MenuCard menuCard = filteredMenuList()[index];
+                      //addMenuToHotel(widget.hotelId, menuCard);
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child: MyMenuStyle(
+                          data: hotelData,
+                        ),
+                      );
+                    },
+                  ),
+                  Container(
+                    height: 80,
+                    color: Colors.grey[400],
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Icon(
-                            Icons.search,
-                            size: 30,
-                            color: Colors.black,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          child: TextField(
-                            onChanged: (value) {
-                              setState(() {
-                                searchQuery = value;
-                              });
-                            },
-                            decoration:
-                                InputDecoration(border: InputBorder.none),
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: Container(
+                            height: 50,
+                            width: 270,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.white70,
+                            ),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  child: Icon(
+                                    Icons.search,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    onChanged: (value) {
+                                      setState(() {
+                                        searchQuery = value;
+                                      });
+                                    },
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         )
                       ],
                     ),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
+                  )
+                ],
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
     );
   }
 }

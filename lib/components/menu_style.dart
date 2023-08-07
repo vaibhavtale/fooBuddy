@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/menu_item_page.dart';
 
-import 'menu_card.dart';
-
 class MyMenuStyle extends StatefulWidget {
-  final MenuCard menuCard;
+  final Map<String, dynamic> data;
 
-  const MyMenuStyle({Key? key, required this.menuCard}) : super(key: key);
+  const MyMenuStyle({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MyMenuStyle> createState() => _MyMenuStyleState();
@@ -17,8 +15,13 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MenuItemPage(menuCard: widget.menuCard))),
+        onTap: (){
+          print('----------------------------------------------------');
+          print(widget.data);
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MenuItemPage( data: widget.data,)));
+        },
+
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [
@@ -32,7 +35,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.asset(
-                    widget.menuCard.imagePath,
+                    widget.data['image_url'],
                     fit: BoxFit.cover,
                   )),
             ),
@@ -53,7 +56,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          widget.menuCard.foodName,
+                          widget.data['name'],
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -63,7 +66,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          "\$" + widget.menuCard.price.toString(),
+                          "\$" + widget.data['price'].toString(),
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,

@@ -11,7 +11,7 @@ class HotelStyle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    void _getDocumentId(HotelCard hotelCard) async {
+    Future _getDocumentId(HotelCard hotelCard) async {
       final docs = await FirebaseFirestore.instance
           .collection('hotels')
           .where('name', isEqualTo: hotelCard.restaurantName)
@@ -32,8 +32,8 @@ class HotelStyle extends StatelessWidget {
 
     return Center(
       child: GestureDetector(
-        onTap: () {
-          _getDocumentId(hotelCard);
+        onTap: () async {
+          await _getDocumentId(hotelCard);
         },
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
