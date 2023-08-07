@@ -9,7 +9,11 @@ import '../components/custom_methods.dart';
 
 class MenuPage extends StatefulWidget {
   final HotelCard hotelCard;
-  const MenuPage({Key? key, required this.hotelCard,}) : super(key: key);
+
+  const MenuPage({
+    Key? key,
+    required this.hotelCard,
+  }) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -17,23 +21,24 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   String searchQuery = '';
-  CollectionReference hotelCollection = FirebaseFirestore.instance.collection('hotel');
-  final _firestore =  FirebaseFirestore.instance;
+  CollectionReference hotelCollection =
+      FirebaseFirestore.instance.collection('hotel');
+  final _firestore = FirebaseFirestore.instance;
 
   /*Future<void> _updateUserData(MenuCard menuCard) async {
     try {
 
-      await _firestore.collection('hotels').doc(widget.hotelId).collection('menu').add(
+      await _firestore.collection('products').add(
           {
             'name' : menuCard.foodName,
-            'hotel_id' : widget.hotelId,
             'price': menuCard.price,
             'image_url' : menuCard.imagePath,
             'isNonVeg' : menuCard.isNonVeg,
+            'popularity' : 0,
+            'description' : "",
           }
       );
 
-      Navigator.of(context).pop();
       showMessage(
           context, 'Success menu collection added succesfully successfully');
     } catch (e) {
@@ -59,7 +64,23 @@ class _MenuPageState extends State<MenuPage> {
         backgroundColor: Colors.grey[300],
         elevation: 0,
         actions: [
-          IconButton(onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => UserCart())), icon: Icon(Icons.shopping_cart, color: Colors.black, size: 20,))
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white54
+            ),
+              child: Padding(
+                padding:  EdgeInsets.all(3.0),
+                child: IconButton(
+                    onPressed: () => Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => UserCart())),
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.deepOrangeAccent,
+                      size: 30,
+                    )),
+              ))
         ],
       ),
       body: Stack(

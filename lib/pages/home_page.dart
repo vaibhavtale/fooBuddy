@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             HotelCard hotelcard = hotelList[index];
             String? customID;
-            _getDocumentId(hotelcard, customID);
+            // _getDocumentId(hotelcard, customID);
 
             // _firestore.collection('hotels').doc(customID).collection('menu').add;
 

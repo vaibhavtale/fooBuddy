@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
+import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/menu_card.dart';
 
 class MenuItemPage extends StatefulWidget {
@@ -16,6 +17,7 @@ class MenuItemPage extends StatefulWidget {
 class _MenuItemPageState extends State<MenuItemPage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  int _itemCount = 0;
 
   Future _addItemToUserCart() async {
     // Add the item to the userCart list
@@ -23,7 +25,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
       'name': widget.menuCard.foodName,
       'image_url': widget.menuCard.imagePath,
       'price': widget.menuCard.price,
-      'quantity' : 0,
+      'quantity': _itemCount,
     };
 
     final docs = await _firestore
@@ -39,19 +41,22 @@ class _MenuItemPageState extends State<MenuItemPage> {
       await _firestore.collection('users').doc(docId).update({
         'userCart': FieldValue.arrayUnion([itemData])
       });
-      print("you got it");
+      showMessage(context, 'Product added to UserCart succesfully.');
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future _addItemToSavedList() async{
+  void _incrementCounter(bool icreament){
+    icreament  ? _itemCount++ : _itemCount--;
+  }
 
+  Future _addItemToSavedList() async {
     Map<String, dynamic> itemData = {
       'name': widget.menuCard.foodName,
       'image_url': widget.menuCard.imagePath,
       'price': widget.menuCard.price,
-      'quantity' : 0,
+      'quantity': _itemCount,
     };
 
     final docs = await _firestore
@@ -67,7 +72,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
       await _firestore.collection('users').doc(docId).update({
         'savedItems': FieldValue.arrayUnion([itemData])
       });
-      print("you got it");
+      showMessage(context, 'Product added to savedList succesfully.');
     } catch (e) {
       print(e.toString());
     }
@@ -132,9 +137,10 @@ class _MenuItemPageState extends State<MenuItemPage> {
                         height: 60,
                       ),
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: EdgeInsets.only(left: 150, right: 50),
+                            padding: EdgeInsets.only( right: 50),
                             child: Text(
                               "Quantity : ",
                               style: TextStyle(
@@ -143,35 +149,33 @@ class _MenuItemPageState extends State<MenuItemPage> {
                                   color: Colors.red),
                             ),
                           ),
-                          Text(
-                            "-",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.red),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _incrementCounter(false);
+                              });
+                            },
+                            child: CustomCircularButton(icon: Icon(Icons.add, color: Colors.white, size: 15,),),
                           ),
                           SizedBox(
                             width: 20,
                           ),
-                          Container(
-                            color: Colors.grey[300],
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Center(
-                                child: Text("1"),
-                              ),
+                          Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Center(
+                              child: Text(_itemCount.toString()),
                             ),
                           ),
                           SizedBox(
                             width: 20,
                           ),
-                          Text(
-                            "+",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.red),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _incrementCounter(true);
+                              });
+                            },
+                            child: CustomCircularButton(icon: Icon(Icons.minimize_outlined, color: Colors.white, size: 15,),),
                           ),
                         ],
                       ),
@@ -183,16 +187,9 @@ class _MenuItemPageState extends State<MenuItemPage> {
                         children: [
                           GestureDetector(
                             onTap: _addItemToSavedList,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey[300],
-                                  borderRadius: BorderRadius.circular(15)),
-                              width: 70,
-                              height: 60,
-                              child: Icon(
-                                Icons.add_task,
-                                size: 30,
-                              ),
+                            child: CustomGradientButton(
+                              text: 'Save',
+                              gradient: true,
                             ),
                           ),
                           GestureDetector(

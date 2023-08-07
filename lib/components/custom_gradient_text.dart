@@ -85,3 +85,23 @@ class CustomNonGradientButton extends StatelessWidget {
   }
 }
 
+class CustomCircularButton extends StatelessWidget {
+  final Icon icon;
+  const CustomCircularButton({Key? key, required this.icon}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Colors.deepOrange
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Center(child: icon),
+      ),
+    );
+  }
+}
+
+
