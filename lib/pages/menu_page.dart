@@ -24,6 +24,7 @@ class _MenuPageState extends State<MenuPage> {
   CollectionReference hotelCollection =
       FirebaseFirestore.instance.collection('hotel');
   final _firestore = FirebaseFirestore.instance;
+  
 
   /*Future<void> _updateUserData(MenuCard menuCard) async {
     try {
@@ -59,7 +60,8 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         elevation: 0,

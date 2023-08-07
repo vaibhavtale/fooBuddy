@@ -152,7 +152,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                           GestureDetector(
                             onTap: () {
                               setState(() {
-                                _incrementCounter(false);
+                                _incrementCounter(true);
                               });
                             },
                             child: CustomCircularButton(icon: Icon(Icons.add, color: Colors.white, size: 15,),),
@@ -171,8 +171,9 @@ class _MenuItemPageState extends State<MenuItemPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              if(_itemCount <= 0) return;
                               setState(() {
-                                _incrementCounter(true);
+                                _incrementCounter(false);
                               });
                             },
                             child: CustomCircularButton(icon: Icon(Icons.minimize_outlined, color: Colors.white, size: 15,),),
