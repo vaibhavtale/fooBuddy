@@ -77,7 +77,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                 ),
               ),
             ),
-            Expanded(
+            /*Expanded(
               child: ListView.builder(
                 itemCount: filteredMenuList().length,
                 itemBuilder: (context, index) {
@@ -87,7 +87,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                   );
                 },
               ),
-            ),
+            ),*/
           ],
         ),
       ),

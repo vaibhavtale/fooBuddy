@@ -5,18 +5,18 @@ class HotelCard {
 
   HotelCard(
       {required this.imagePath,
-      required this.restaurantName,
-      required this.isNonVeg});
+        required this.restaurantName,
+        required this.isNonVeg});
 }
 
 List<HotelCard> hotelList = [
   HotelCard(
       imagePath: "images/f6.jpg",
-      restaurantName: "Hotel Surya family restaurant",
+      restaurantName: "Surya family restaurant",
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f2.jpg",
-      restaurantName: "friends corner",
+      restaurantName: "Matoshri Restaurant",
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f3.jpg",
@@ -24,15 +24,15 @@ List<HotelCard> hotelList = [
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f4.jpg",
-      restaurantName: "Dwaraka Restaurant",
+      restaurantName: "Couple's Corner",
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f3.jpg",
-      restaurantName: "Matoshree Restaurant",
+      restaurantName: "friends Forever",
       isNonVeg: false),
   HotelCard(
       imagePath: "images/f5.jpg",
-      restaurantName: "Couple Corner",
+      restaurantName: "Shivneri Dhaba",
       isNonVeg: true),
   HotelCard(
       imagePath: "images/f1.jpg",

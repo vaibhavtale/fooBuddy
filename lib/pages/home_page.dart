@@ -19,16 +19,32 @@ class _HomePageState extends State<HomePage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  void _getDocumentId(HotelCard hotelCard, String? ID) async{
+  void addHotelToFirestore(HotelCard hotelCard) async {
+    // Data for the new hotel document
+    Map<String, dynamic> newHotelData = {
+      'name': hotelCard.restaurantName,
+      'image_url' : hotelCard.imagePath,
+      'rating' : 4.5,
+      'address' : 'Malkapur, buldhana',
+      // Add more fields as needed
+    };
 
-    final docs = await _firestore
-        .collection('hotels')
-        .where('name', isEqualTo: hotelCard.restaurantName)
-        .get();
+    // Get a reference to the "hotels" collection
+    CollectionReference hotelsCollection =
+    FirebaseFirestore.instance.collection('hotels');
 
-    final docId = docs.docs.first.id;
-    print(docId);
-    ID = docId;
+    // Add the document to the "hotels" collection
+    try {
+      await hotelsCollection.add(newHotelData);
+      print('Document added successfully.');
+    } catch (e) {
+      print('Error adding document: $e');
+    }
+  }
+
+  void _getDocumentId(HotelCard hotelCard,) async{
+
+
   }
 
   @override
@@ -58,9 +74,16 @@ class _HomePageState extends State<HomePage> {
           itemBuilder: (context, index) {
             HotelCard hotelcard = hotelList[index];
             String? customID;
+// <<<<<<< HEAD
             // _getDocumentId(hotelcard, customID);
 
             // _firestore.collection('hotels').doc(customID).collection('menu').add;
+// =======
+            // _getDocumentId(hotelcard,);
+            // addHotelToFirestore(hotelcard);
+            
+            // _firestore.collection('hotels').doc(customID).collection('menu');
+// >>>>>>> origin/profile_page
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

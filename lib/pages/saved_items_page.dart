@@ -32,8 +32,13 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
       final docId = docs.docs.first.id;
 
       await _firestore.collection('users').doc(docId).update(userData);
-      print("mission succesful boss");
-      showMessage(context, 'Success SavedList has been updated successfully');
+// //       print("mission succesful boss");
+// // <<<<<<< HEAD
+//       showMessage(context, 'Success SavedList has been updated successfully');
+// // =======
+      showMessage(
+          context, 'Success SavedList has been updated successfully');
+// >>>>>>> origin/profile_page
     } catch (e) {
       showMessage(context, "Error updating savedList: $e");
     }

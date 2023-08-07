@@ -6,9 +6,9 @@ import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/menu_card.dart';
 
 class MenuItemPage extends StatefulWidget {
-  final MenuCard menuCard;
+  final Map<String, dynamic> data;
 
-  const MenuItemPage({Key? key, required this.menuCard}) : super(key: key);
+  const MenuItemPage({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MenuItemPage> createState() => _MenuItemPageState();
@@ -22,10 +22,17 @@ class _MenuItemPageState extends State<MenuItemPage> {
   Future _addItemToUserCart() async {
     // Add the item to the userCart list
     Map<String, dynamic> itemData = {
-      'name': widget.menuCard.foodName,
-      'image_url': widget.menuCard.imagePath,
-      'price': widget.menuCard.price,
-      'quantity': _itemCount,
+// <<<<<<< HEAD
+//       'name': widget.menuCard.foodName,
+//       'image_url': widget.menuCard.imagePath,
+//       'price': widget.menuCard.price,
+//       'quantity': _itemCount,
+// =======
+      'name': widget.data['name'],
+      'image_url': widget.data['image_url'],
+      'price': widget.data['price'],
+      'quantity' : 0,
+// >>>>>>> origin/profile_page
     };
 
     final docs = await _firestore
@@ -53,10 +60,17 @@ class _MenuItemPageState extends State<MenuItemPage> {
 
   Future _addItemToSavedList() async {
     Map<String, dynamic> itemData = {
-      'name': widget.menuCard.foodName,
-      'image_url': widget.menuCard.imagePath,
-      'price': widget.menuCard.price,
-      'quantity': _itemCount,
+// <<<<<<< HEAD
+//       'name': widget.menuCard.foodName,
+//       'image_url': widget.menuCard.imagePath,
+//       'price': widget.menuCard.price,
+//       'quantity': _itemCount,
+// =======
+      'name': widget.data['name'],
+      'image_url': widget.data['image_url'],
+      'price': widget.data['price'],
+      'quantity' : 0,
+// >>>>>>> origin/profile_page
     };
 
     final docs = await _firestore
@@ -90,7 +104,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.data != null) {
-                final data = snapshot.data!.docs.first.data();
+                final menuData = snapshot.data!.docs.first.data();
                 return Center(
                   child: Column(
                     children: [
@@ -103,7 +117,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                               LinearGradient(colors: [Colors.red, Colors.pink]),
                         ),
                         child: Image.asset(
-                          widget.menuCard.imagePath,
+                          widget.data['image_url'],
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -116,7 +130,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 25),
                             child: Text(
-                              widget.menuCard.foodName,
+                              widget.data['name'],
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -125,7 +139,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                           ),
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Text("\$" + widget.menuCard.price.toString(),
+                            child: Text("\$" + widget.data['price'].toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -139,8 +153,13 @@ class _MenuItemPageState extends State<MenuItemPage> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Padding(
-                            padding: EdgeInsets.only( right: 50),
+// <<<<<<< HEAD
+//                           Padding(
+//                             padding: EdgeInsets.only( right: 50),
+// =======
+                          const Padding(
+                            padding: EdgeInsets.only(left: 150, right: 50),
+// >>>>>>> origin/profile_page
                             child: Text(
                               "Quantity : ",
                               style: TextStyle(
@@ -149,6 +168,7 @@ class _MenuItemPageState extends State<MenuItemPage> {
                                   color: Colors.red),
                             ),
                           ),
+// <<<<<<< HEAD
                           GestureDetector(
                             onTap: () {
                               setState(() {
@@ -156,19 +176,39 @@ class _MenuItemPageState extends State<MenuItemPage> {
                               });
                             },
                             child: CustomCircularButton(icon: Icon(Icons.add, color: Colors.white, size: 15,),),
+// =======
+//                           const Text(
+//                             "-",
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 20,
+//                                 color: Colors.red),
+// >>>>>>> origin/profile_page
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 20,
                           ),
+// <<<<<<< HEAD
                           Padding(
                             padding: const EdgeInsets.all(10),
                             child: Center(
                               child: Text(_itemCount.toString()),
+// =======
+//                           Container(
+//                             color: Colors.grey[300],
+//                             padding: EdgeInsets.symmetric(horizontal: 20),
+//                             child: const Padding(
+//                               padding: EdgeInsets.all(10),
+//                               child: Center(
+//                                 child: Text("1"),
+//                               ),
+// >>>>>>> origin/profile_page
                             ),
                           ),
                           SizedBox(
                             width: 20,
                           ),
+// <<<<<<< HEAD
                           GestureDetector(
                             onTap: () {
                               if(_itemCount <= 0) return;
@@ -177,6 +217,14 @@ class _MenuItemPageState extends State<MenuItemPage> {
                               });
                             },
                             child: CustomCircularButton(icon: Icon(Icons.minimize_outlined, color: Colors.white, size: 15,),),
+// =======
+//                           const Text(
+//                             "+",
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.bold,
+//                                 fontSize: 20,
+//                                 color: Colors.red),
+// >>>>>>> origin/profile_page
                           ),
                         ],
                       ),
