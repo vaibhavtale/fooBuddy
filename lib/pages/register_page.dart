@@ -24,9 +24,9 @@ class _RegisterPageState extends State<RegisterPage> {
     String phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^\d]'), '');
     if (phoneNumber.length != 10) {
       showMessage(context, 'please Enter correct 10-digit phone Number.');
-    } else if(_nameController.text.length == 0){
+    } else if (_nameController.text.length == 0) {
       showMessage(context, 'please Enter your name.');
-    } else if(_addressController.text.length == 0){
+    } else if (_addressController.text.length == 0) {
       showMessage(context, 'please Enter your current address.');
     } else {
       try {

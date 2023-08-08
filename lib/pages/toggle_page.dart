@@ -15,7 +15,7 @@ class TogglePage extends StatelessWidget {
           if (snapshot.hasData) {
             return const ProfilePage();
           } else {
-            return const LoginPage();
+            return LoginPage();
           }
         },
       ),

@@ -46,58 +46,62 @@ class _UserCartState extends State<UserCart> {
       appBar: AppBar(
         title: Text("UserCart"),
       ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          future: _firestore
-              .collection('users')
-              .where('email', isEqualTo: _auth.currentUser!.email)
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data != null) {
-                final data = snapshot.data!.docs.first.data();
-                List userCartList = data['userCart'];
-                return userCartList.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: data['userCart'].length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 30, right: 30, top: 10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  leading: Image.asset(
-                                      data['userCart'][index]['image_url']),
-                                  title: Text(data['userCart'][index]['name']),
-                                  subtitle: Text(
-                                    "\$ " +
-                                        data['userCart'][index]['price']
-                                            .toString(),
-                                    style: TextStyle(color: Colors.redAccent),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.redAccent,
-                                    onPressed: () async{
-                                      await _updateUserCart(data, index);
-                                      setState(() {});
-                                    },
+      body: _auth.currentUser != null
+          ? FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: _firestore
+                  .collection('users')
+                  .where('email', isEqualTo: _auth.currentUser!.email)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.data != null) {
+                    final data = snapshot.data!.docs.first.data();
+                    List userCartList = data['userCart'];
+                    return userCartList.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: data['userCart'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30, right: 30, top: 10),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListTile(
+                                      leading: Image.asset(
+                                          data['userCart'][index]['image_url']),
+                                      title:
+                                          Text(data['userCart'][index]['name']),
+                                      subtitle: Text(
+                                        "\$ " +
+                                            data['userCart'][index]['price']
+                                                .toString(),
+                                        style:
+                                            TextStyle(color: Colors.redAccent),
+                                      ),
+                                      trailing: IconButton(
+                                        icon: Icon(Icons.delete),
+                                        color: Colors.redAccent,
+                                        onPressed: () async {
+                                          await _updateUserCart(data, index);
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(child: Text("Cart is Empty"));
-              }
-            }
-            return const Center(child: CircularProgressIndicator());
-          }),
+                              );
+                            },
+                          )
+                        : Center(child: Text("Cart is Empty"));
+                  }
+                }
+                return const Center(child: CircularProgressIndicator());
+              })
+          : Center(child: Text("Log in to use Cart")),
     );
   }
 }

@@ -5,8 +5,8 @@ class HotelCard {
 
   HotelCard(
       {required this.imagePath,
-        required this.restaurantName,
-        required this.isNonVeg});
+      required this.restaurantName,
+      required this.isNonVeg});
 }
 
 List<HotelCard> hotelList = [

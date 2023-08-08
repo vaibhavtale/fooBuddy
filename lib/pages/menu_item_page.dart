@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/menu_card.dart';
+import 'package:foodbuddy/pages/login_page.dart';
+import 'package:foodbuddy/pages/menu_item_page_2.dart';
 
 class MenuItemPage extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -22,17 +24,10 @@ class _MenuItemPageState extends State<MenuItemPage> {
   Future _addItemToUserCart() async {
     // Add the item to the userCart list
     Map<String, dynamic> itemData = {
-// <<<<<<< HEAD
-//       'name': widget.menuCard.foodName,
-//       'image_url': widget.menuCard.imagePath,
-//       'price': widget.menuCard.price,
-//       'quantity': _itemCount,
-// =======
       'name': widget.data['name'],
       'image_url': widget.data['image_url'],
       'price': widget.data['price'],
-      'quantity' : 0,
-// >>>>>>> origin/profile_page
+      'quantity': 0,
     };
 
     final docs = await _firestore
@@ -54,23 +49,16 @@ class _MenuItemPageState extends State<MenuItemPage> {
     }
   }
 
-  void _incrementCounter(bool icreament){
-    icreament  ? _itemCount++ : _itemCount--;
+  void _incrementCounter(bool icreament) {
+    icreament ? _itemCount++ : _itemCount--;
   }
 
   Future _addItemToSavedList() async {
     Map<String, dynamic> itemData = {
-// <<<<<<< HEAD
-//       'name': widget.menuCard.foodName,
-//       'image_url': widget.menuCard.imagePath,
-//       'price': widget.menuCard.price,
-//       'quantity': _itemCount,
-// =======
       'name': widget.data['name'],
       'image_url': widget.data['image_url'],
       'price': widget.data['price'],
-      'quantity' : 0,
-// >>>>>>> origin/profile_page
+      'quantity': 0,
     };
 
     final docs = await _firestore
@@ -95,167 +83,28 @@ class _MenuItemPageState extends State<MenuItemPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          future: _firestore
-              .collection('users')
-              .where('email', isEqualTo: _auth.currentUser!.email)
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.data != null) {
-                final menuData = snapshot.data!.docs.first.data();
+      appBar: AppBar(),
+      body: _auth.currentUser != null
+          ? FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: _firestore
+                  .collection('users')
+                  .where('email', isEqualTo: _auth.currentUser!.email)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  final menuData = snapshot.data!.docs.first.data();
+                  return MenuItem(
+                    data: widget.data,
+                  );
+                }
                 return Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.50,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          color: Colors.red,
-                          gradient:
-                              LinearGradient(colors: [Colors.red, Colors.pink]),
-                        ),
-                        child: Image.asset(
-                          widget.data['image_url'],
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 25),
-                            child: Text(
-                              widget.data['name'],
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 25),
-                            child: Text("\$" + widget.data['price'].toString(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.red)),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 60,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-// <<<<<<< HEAD
-//                           Padding(
-//                             padding: EdgeInsets.only( right: 50),
-// =======
-                          const Padding(
-                            padding: EdgeInsets.only(left: 150, right: 50),
-// >>>>>>> origin/profile_page
-                            child: Text(
-                              "Quantity : ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.red),
-                            ),
-                          ),
-// <<<<<<< HEAD
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _incrementCounter(true);
-                              });
-                            },
-                            child: CustomCircularButton(icon: Icon(Icons.add, color: Colors.white, size: 15,),),
-// =======
-//                           const Text(
-//                             "-",
-//                             style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 20,
-//                                 color: Colors.red),
-// >>>>>>> origin/profile_page
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-// <<<<<<< HEAD
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Center(
-                              child: Text(_itemCount.toString()),
-// =======
-//                           Container(
-//                             color: Colors.grey[300],
-//                             padding: EdgeInsets.symmetric(horizontal: 20),
-//                             child: const Padding(
-//                               padding: EdgeInsets.all(10),
-//                               child: Center(
-//                                 child: Text("1"),
-//                               ),
-// >>>>>>> origin/profile_page
-                            ),
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-// <<<<<<< HEAD
-                          GestureDetector(
-                            onTap: () {
-                              if(_itemCount <= 0) return;
-                              setState(() {
-                                _incrementCounter(false);
-                              });
-                            },
-                            child: CustomCircularButton(icon: Icon(Icons.minimize_outlined, color: Colors.white, size: 15,),),
-// =======
-//                           const Text(
-//                             "+",
-//                             style: TextStyle(
-//                                 fontWeight: FontWeight.bold,
-//                                 fontSize: 20,
-//                                 color: Colors.red),
-// >>>>>>> origin/profile_page
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 70,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: _addItemToSavedList,
-                            child: CustomGradientButton(
-                              text: 'Save',
-                              gradient: true,
-                            ),
-                          ),
-                          GestureDetector(
-                              onTap: () => _addItemToUserCart(),
-                              child: CustomNonGradientButton(
-                                  onTap: addItemToCart, text: "Add Cart")),
-                        ],
-                      ),
-                    ],
-                  ),
+                  child: CircularProgressIndicator(),
                 );
-              }
-            }
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-        ));
+              },
+            )
+          : MenuItem(
+              data: widget.data,
+            ),
+    );
   }
 }

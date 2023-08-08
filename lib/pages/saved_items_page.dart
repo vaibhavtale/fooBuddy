@@ -14,7 +14,8 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  Future<void> _updateSavedItemsList(Map<String, dynamic> data, int index) async {
+  Future<void> _updateSavedItemsList(
+      Map<String, dynamic> data, int index) async {
     final List<dynamic> _savedList = data['savedItems'];
 
     _savedList.removeAt(index);
@@ -32,13 +33,7 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
       final docId = docs.docs.first.id;
 
       await _firestore.collection('users').doc(docId).update(userData);
-// //       print("mission succesful boss");
-// // <<<<<<< HEAD
-//       showMessage(context, 'Success SavedList has been updated successfully');
-// // =======
-      showMessage(
-          context, 'Success SavedList has been updated successfully');
-// >>>>>>> origin/profile_page
+      showMessage(context, 'Success SavedList has been updated successfully');
     } catch (e) {
       showMessage(context, "Error updating savedList: $e");
     }
@@ -50,67 +45,66 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
       appBar: AppBar(
         title: Text("Saved Items"),
       ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          future: _firestore
-              .collection('users')
-              .where('email', isEqualTo: _auth.currentUser!.email)
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                final data = snapshot.data!.docs.first.data();
-                List listOfSavedItems = data['savedItems'];
-                return listOfSavedItems.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: data['savedItems'].length,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 30, right: 30, top: 10),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: ListTile(
-                                  leading: Image.asset(
-                                      data['savedItems'][index]['image_url']),
-                                  title:
-                                      Text(data['savedItems'][index]['name']),
-                                  subtitle: Text(
-                                    "\$ " +
-                                        data['savedItems'][index]['price']
-                                            .toString(),
-                                    style: TextStyle(color: Colors.redAccent),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    color: Colors.redAccent,
-                                    onPressed: () async {
-                                      await _updateSavedItemsList(data, index);
-                                      setState(() {});
-                                    },
+      body: _auth.currentUser != null
+          ? FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+              future: _firestore
+                  .collection('users')
+                  .where('email', isEqualTo: _auth.currentUser!.email)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    final data = snapshot.data!.docs.first.data();
+                    List listOfSavedItems = data['savedItems'];
+                    return listOfSavedItems.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: data['savedItems'].length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 30, right: 30, top: 10),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ListTile(
+                                      leading: Image.asset(data['savedItems']
+                                          [index]['image_url']),
+                                      title: Text(
+                                          data['savedItems'][index]['name']),
+                                      subtitle: Text(
+                                        "\$ " +
+                                            data['savedItems'][index]['price']
+                                                .toString(),
+                                        style:
+                                            TextStyle(color: Colors.redAccent),
+                                      ),
+                                      trailing: IconButton(
+                                        icon: Icon(Icons.delete),
+                                        color: Colors.redAccent,
+                                        onPressed: () async {
+                                          await _updateSavedItemsList(
+                                              data, index);
+                                          setState(() {});
+                                        },
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      )
-                    : Center(child: Text("No saved Items."));
-              } else if(snapshot.hasError){
-                return Center(
-                  child: Text("please LogIn to Save."),
-                );
-              }
-            }else if(snapshot.hasError){
-              return Center(
-                child: Text("please LogIn to Save."),
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          }),
+                              );
+                            },
+                          )
+                        : Center(child: Text("No saved Items."));
+                  }
+                }
+                return Center(child: CircularProgressIndicator());
+              },
+            )
+          : Center(
+              child: Text("please LogIn to Save."),
+            ),
     );
   }
 }

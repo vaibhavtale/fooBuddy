@@ -63,16 +63,16 @@ class CustomGradientButton extends StatelessWidget {
 //Button used to add items to cart
 
 class CustomNonGradientButton extends StatelessWidget {
-  final Function onTap;
   final String text;
-  const CustomNonGradientButton({Key? key, required this.onTap, required this.text}) : super(key: key);
+
+  const CustomNonGradientButton({Key? key, required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Colors.deepOrange,
-          borderRadius: BorderRadius.circular(15)),
+          color: Colors.deepOrange, borderRadius: BorderRadius.circular(15)),
       width: 300,
       height: 60,
       child: Center(
@@ -87,15 +87,14 @@ class CustomNonGradientButton extends StatelessWidget {
 
 class CustomCircularButton extends StatelessWidget {
   final Icon icon;
+
   const CustomCircularButton({Key? key, required this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.deepOrange
-      ),
+      decoration:
+          BoxDecoration(shape: BoxShape.circle, color: Colors.deepOrange),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(child: icon),
@@ -103,5 +102,3 @@ class CustomCircularButton extends StatelessWidget {
     );
   }
 }
-
-

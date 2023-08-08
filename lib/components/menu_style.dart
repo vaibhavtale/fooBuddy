@@ -15,13 +15,14 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           print('----------------------------------------------------');
           print(widget.data);
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MenuItemPage( data: widget.data,)));
+              builder: (context) => MenuItemPage(
+                    data: widget.data,
+                  )));
         },
-
         child: Stack(
           alignment: AlignmentDirectional.bottomEnd,
           children: [
