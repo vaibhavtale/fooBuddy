@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:foodbuddy/my_bottom_nav_bar.dart';
+import 'package:foodbuddy/pages/toggle_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -31,21 +33,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: FutureBuilder(
-          future: simulatorAppLoading(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Scaffold(
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else {
-              return MyNavigationBar();
-            }
-          },
-        ));
+    final _auth = FirebaseAuth.instance;
+    return MaterialApp(debugShowCheckedModeBanner: false, home: TogglePage()
+        // _auth.currentUser == null ? LoginPage() : MyNavigationBar(),
+        );
   }
 }

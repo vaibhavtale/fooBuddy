@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/menu_card.dart';
 
@@ -12,14 +14,21 @@ class SearchScreenPage extends StatefulWidget {
 
 class _SearchScreenPageState extends State<SearchScreenPage> {
   String searchQuery = '';
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
+  List<Map<String, dynamic>>? _productList;
 
-  List<MenuCard> filteredMenuList() {
+  List<Map<String, dynamic>> filteredMenuList(QuerySnapshot snapshot) {
     if (searchQuery.isEmpty) {
       return [];
     } else {
-      return menuList
-          .where((menu) =>
-              menu.foodName.toLowerCase().contains(searchQuery.toLowerCase()))
+      return snapshot.docs
+          .where(
+            (doc) => (doc['name'] as String)
+                .toLowerCase()
+                .contains(searchQuery.toLowerCase()),
+          )
+          .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
     }
   }
@@ -27,69 +36,84 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Center(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Container(
-                height: 60,
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.redAccent),
-                    borderRadius: BorderRadius.circular(30)),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Row(
+      child: Scaffold(
+        body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            future: _firestore.collection('products').get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                _productList = filteredMenuList(snapshot.data!);
+                return Center(
+                  child: Column(
                     children: [
-                      const Icon(
-                        Icons.search,
-                        size: 30,
-                        color: Colors.redAccent,
+                      SizedBox(
+                        height: 30,
                       ),
-                      const SizedBox(
-                        width: 10,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        child: Container(
+                          height: 60,
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.redAccent),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                            ),
+                            child: Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () => setState(() {
+                                  }),
+                                  child:  Icon(
+                                    Icons.search,
+                                    size: 30,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextField(
+                                    onChanged: (value) {
+                                        searchQuery = value;
+
+                                    },
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.black),
+                                    decoration: const InputDecoration(
+                                      hintText: "Search",
+                                      hintStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.pinkAccent,
+                                          fontSize: 24),
+                                      border: InputBorder.none,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
                       Expanded(
-                        child: TextField(
-                          onChanged: (value) {
-                            setState(() {
-                              searchQuery = value;
-                            });
+                        child: ListView.builder(
+                          itemCount: _productList!.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> menuData = _productList![index];
+                            return MyMenuStyle(
+                              fromSearchPage: true,
+                              data: menuData,
+                            );
                           },
-                          style: TextStyle(fontSize: 20, color: Colors.black),
-                          decoration: const InputDecoration(
-                            hintText: "Search",
-                            hintStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.pinkAccent,
-                                fontSize: 24),
-                            border: InputBorder.none,
-                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-              ),
-            ),
-            /*Expanded(
-              child: ListView.builder(
-                itemCount: filteredMenuList().length,
-                itemBuilder: (context, index) {
-                  MenuCard menuCard = filteredMenuList()[index];
-                  return MyMenuStyle(
-                    menuCard: menuCard,
-                  );
-                },
-              ),
-            ),*/
-          ],
-        ),
+                );
+              }
+              return Center(child: CircularProgressIndicator(),);
+            }),
       ),
     );
   }

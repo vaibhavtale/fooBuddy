@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:foodbuddy/components/menu_card.dart';
@@ -9,8 +10,8 @@ import '../components/custom_methods.dart';
 
 class MenuPage extends StatefulWidget {
   final String hotelId;
-
-  const MenuPage({Key? key, required this.hotelId}) : super(key: key);
+  final String hotelName;
+  const MenuPage({Key? key, required this.hotelId, required this.hotelName}) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -18,6 +19,8 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   String searchQuery = '';
+  final _firestore = FirebaseFirestore.instance;
+  final _auth = FirebaseAuth.instance;
 
 /*  Future<void> removeDuplicatesFromSubcollection(String hotelId, String menu) async {
     // Reference to the subcollection
@@ -46,6 +49,20 @@ class _MenuPageState extends State<MenuPage> {
       }
     }
   }*/
+
+  Future _addItemsToProducts(Map<String, dynamic> data) async{
+
+    await _firestore.collection('products').add(
+      {
+        'name' : data['name'],
+        'hotel_id' : data['hotel_id'],
+        'hotel_name' : widget.hotelName,
+        'price' : data['price'],
+        'image_url' : data['image_url'],
+        'isNonVeg' : data['isNonVeg']
+      }
+    );
+  }
 
   List<Map<String, dynamic>> filteredMenuList(QuerySnapshot snapshot) {
     if (searchQuery.isEmpty) {
@@ -110,6 +127,9 @@ class _MenuPageState extends State<MenuPage> {
                       // MenuCard menuCard = filteredMenuList()[index];
                       //addMenuToHotel(widget.hotelId, menuCard);
                       Map<String, dynamic> menuData = menuList[index];
+
+                      // _addItemsToProducts(menuData);
+
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),
                         child: MyMenuStyle(

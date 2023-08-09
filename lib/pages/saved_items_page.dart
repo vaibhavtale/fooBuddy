@@ -45,66 +45,59 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
       appBar: AppBar(
         title: Text("Saved Items"),
       ),
-      body: _auth.currentUser != null
-          ? FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: _firestore
-                  .collection('users')
-                  .where('email', isEqualTo: _auth.currentUser!.email)
-                  .get(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  if (snapshot.hasData) {
-                    final data = snapshot.data!.docs.first.data();
-                    List listOfSavedItems = data['savedItems'];
-                    return listOfSavedItems.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: data['savedItems'].length,
-                            itemBuilder: (context, index) {
-                              return Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30, right: 30, top: 10),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListTile(
-                                      leading: Image.asset(data['savedItems']
-                                          [index]['image_url']),
-                                      title: Text(
-                                          data['savedItems'][index]['name']),
-                                      subtitle: Text(
-                                        "\$ " +
-                                            data['savedItems'][index]['price']
-                                                .toString(),
-                                        style:
-                                            TextStyle(color: Colors.redAccent),
-                                      ),
-                                      trailing: IconButton(
-                                        icon: Icon(Icons.delete),
-                                        color: Colors.redAccent,
-                                        onPressed: () async {
-                                          await _updateSavedItemsList(
-                                              data, index);
-                                          setState(() {});
-                                        },
-                                      ),
-                                    ),
-                                  ),
+      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        future: _firestore
+            .collection('users')
+            .where('email', isEqualTo: _auth.currentUser!.email)
+            .get(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              final data = snapshot.data!.docs.first.data();
+              List listOfSavedItems = data['savedItems'];
+              return listOfSavedItems.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: data['savedItems'].length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.only(
+                              left: 30, right: 30, top: 10),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                leading: Image.asset(
+                                    data['savedItems'][index]['image_url']),
+                                title: Text(data['savedItems'][index]['name']),
+                                subtitle: Text(
+                                  "\$ " +
+                                      data['savedItems'][index]['price']
+                                          .toString(),
+                                  style: TextStyle(color: Colors.redAccent),
                                 ),
-                              );
-                            },
-                          )
-                        : Center(child: Text("No saved Items."));
-                  }
-                }
-                return Center(child: CircularProgressIndicator());
-              },
-            )
-          : Center(
-              child: Text("please LogIn to Save."),
-            ),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  color: Colors.redAccent,
+                                  onPressed: () async {
+                                    await _updateSavedItemsList(data, index);
+                                    setState(() {});
+                                  },
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(child: Text("No saved Items."));
+            }
+          }
+          return Center(child: CircularProgressIndicator());
+        },
+      ),
     );
   }
 }

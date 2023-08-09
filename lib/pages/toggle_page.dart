@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:foodbuddy/my_bottom_nav_bar.dart';
 import 'package:foodbuddy/pages/login_page.dart';
 import 'package:foodbuddy/pages/profile_page.dart';
 
@@ -13,7 +14,7 @@ class TogglePage extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return const ProfilePage();
+            return const MyNavigationBar();
           } else {
             return LoginPage();
           }

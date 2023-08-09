@@ -45,62 +45,49 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title: CustomGradientText(
-          text: "FoodBuddy Online",
-        ),
-        actions: [
-          Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle, color: Colors.grey[200]),
-              child: GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => UserCart())),
-                child: Container(
-                    child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: CustomGradientText(
+            text: "FoodBuddy Online",
+          ),
+          actions: [
+            GestureDetector(
+              onTap: () => Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => UserCart())),
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
+                color: Colors.amberAccent,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                  ),
                   child: Text(
                     _itemCount.toString(),
                     style: TextStyle(color: Colors.black, fontSize: 30),
                   ),
-                )),
-              ))
-        ],
-        elevation: 0,
-      ),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          future: _firestore
-              .collection('users')
-              .where('email', isEqualTo: _auth.currentUser!.email)
-              .get(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData) {
-                final data = snapshot.data!.docs.first.data();
-                final List _userCartList = data['userCart'];
-                _itemCount = _userCartList.length;
-                return ListView.builder(
-                    itemCount: hotelList.length,
-                    itemBuilder: (context, index) {
-                      HotelCard hotelcard = hotelList[index];
+                ),
+              ),
+            ),
+          ],
+          elevation: 0,
+        ),
+        body: ListView.builder(
+          itemCount: hotelList.length,
+          itemBuilder: (context, index) {
+            HotelCard hotelcard = hotelList[index];
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: HotelStyle(
-                          hotelCard: hotelcard,
-                        ),
-                      );
-                    });
-              }
-            }
-            return Center(
-              child: CircularProgressIndicator(),
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: HotelStyle(
+                hotelCard: hotelcard,
+              ),
             );
-          }),
-      // bottomNavigationBar: MyNavigationBar(),
-    );
+          },
+        )
+
+        // bottomNavigationBar: MyNavigationBar(),
+        );
   }
 }
