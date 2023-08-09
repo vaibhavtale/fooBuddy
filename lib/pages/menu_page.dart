@@ -11,7 +11,9 @@ import '../components/custom_methods.dart';
 class MenuPage extends StatefulWidget {
   final String hotelId;
   final String hotelName;
-  const MenuPage({Key? key, required this.hotelId, required this.hotelName}) : super(key: key);
+
+  const MenuPage({Key? key, required this.hotelId, required this.hotelName})
+      : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -21,48 +23,6 @@ class _MenuPageState extends State<MenuPage> {
   String searchQuery = '';
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-
-/*  Future<void> removeDuplicatesFromSubcollection(String hotelId, String menu) async {
-    // Reference to the subcollection
-    CollectionReference subcollectionRef = FirebaseFirestore.instance
-        .collection('hotels')
-        .doc(hotelId)
-        .collection(menu);
-
-    // Query the subcollection
-    QuerySnapshot snapshot = await subcollectionRef.get();
-
-    // Map to track the unique keys
-    Map<String, DocumentSnapshot> uniqueKeys = {};
-
-    // Loop through the documents and identify duplicates
-    for (DocumentSnapshot doc in snapshot.docs) {
-      // Assuming 'fieldToCheck' is the field that determines duplicates
-      String fieldValue = doc['name'];
-
-      if (!uniqueKeys.containsKey(fieldValue)) {
-        // Add the document to the map if the key is not present
-        uniqueKeys[fieldValue] = doc;
-      } else {
-        // Delete the duplicate document
-        await subcollectionRef.doc(doc.id).delete();
-      }
-    }
-  }*/
-
-  Future _addItemsToProducts(Map<String, dynamic> data) async{
-
-    await _firestore.collection('products').add(
-      {
-        'name' : data['name'],
-        'hotel_id' : data['hotel_id'],
-        'hotel_name' : widget.hotelName,
-        'price' : data['price'],
-        'image_url' : data['image_url'],
-        'isNonVeg' : data['isNonVeg']
-      }
-    );
-  }
 
   List<Map<String, dynamic>> filteredMenuList(QuerySnapshot snapshot) {
     if (searchQuery.isEmpty) {
@@ -127,8 +87,6 @@ class _MenuPageState extends State<MenuPage> {
                       // MenuCard menuCard = filteredMenuList()[index];
                       //addMenuToHotel(widget.hotelId, menuCard);
                       Map<String, dynamic> menuData = menuList[index];
-
-                      // _addItemsToProducts(menuData);
 
                       return Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20),

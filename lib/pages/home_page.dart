@@ -19,28 +19,6 @@ class _HomePageState extends State<HomePage> {
   final _auth = FirebaseAuth.instance;
   int _itemCount = 0;
 
-  void addHotelToFirestore(HotelCard hotelCard) async {
-    // Data for the new hotel document
-    Map<String, dynamic> newHotelData = {
-      'name': hotelCard.restaurantName,
-      'image_url': hotelCard.imagePath,
-      'rating': 4.5,
-      'address': 'Malkapur, buldhana',
-      // Add more fields as needed
-    };
-
-    // Get a reference to the "hotels" collection
-    CollectionReference hotelsCollection =
-        FirebaseFirestore.instance.collection('hotels');
-
-    // Add the document to the "hotels" collection
-    try {
-      await hotelsCollection.add(newHotelData);
-      print('Document added successfully.');
-    } catch (e) {
-      print('Error adding document: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +35,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 margin: EdgeInsets.symmetric(
                   horizontal: 10,
+                  vertical: 5
                 ),
                 color: Colors.amberAccent,
                 child: Padding(

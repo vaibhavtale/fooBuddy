@@ -28,7 +28,8 @@ class HotelStyle extends StatelessWidget {
         context,
         MaterialPageRoute(
           builder: (context) => MenuPage(
-            hotelId: docId, hotelName: hotelCard.restaurantName,
+            hotelId: docId,
+            hotelName: hotelCard.restaurantName,
           ),
         ),
       );

@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodbuddy/components/menu_card.dart';
-
 import '../components/menu_style.dart';
 
 class SearchScreenPage extends StatefulWidget {
@@ -62,9 +60,8 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                             child: Row(
                               children: [
                                 GestureDetector(
-                                  onTap: () => setState(() {
-                                  }),
-                                  child:  Icon(
+                                  onTap: () => setState(() {}),
+                                  child: Icon(
                                     Icons.search,
                                     size: 30,
                                     color: Colors.redAccent,
@@ -76,8 +73,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                                 Expanded(
                                   child: TextField(
                                     onChanged: (value) {
-                                        searchQuery = value;
-
+                                      searchQuery = value;
                                     },
                                     style: TextStyle(
                                         fontSize: 20, color: Colors.black),
@@ -96,23 +92,36 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: ListView.builder(
-                          itemCount: _productList!.length,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> menuData = _productList![index];
-                            return MyMenuStyle(
-                              fromSearchPage: true,
-                              data: menuData,
-                            );
-                          },
-                        ),
-                      ),
+                      searchQuery.isNotEmpty
+                          ? Expanded(
+                              child: ListView.builder(
+                                itemCount: _productList!.length,
+                                itemBuilder: (context, index) {
+                                  Map<String, dynamic> menuData =
+                                      _productList![index];
+                                  return MyMenuStyle(
+                                    fromSearchPage: true,
+                                    data: menuData,
+                                  );
+                                },
+                              ),
+                            )
+                          : Padding(
+                            padding: const EdgeInsets.only(top: 270),
+                            child: Center(
+                                child: Text("Search Tasty Food Here.", style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pinkAccent,
+                                    fontSize: 20),),
+                              ),
+                          )
                     ],
                   ),
                 );
               }
-              return Center(child: CircularProgressIndicator(),);
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }),
       ),
     );

@@ -20,69 +20,74 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
         onTap: () {
           print('-------------------------------------------------------');
           print(widget.data);
-          Navigator.of(context).push(MaterialPageRoute(
+          Navigator.of(context).push(
+            MaterialPageRoute(
               builder: (context) => MenuItemPage(
-                    data: widget.data,
-                  ),),);
+                data: widget.data,
+              ),
+            ),
+          );
         },
         child: Stack(
           alignment: Alignment.topLeft,
           children: [
             Stack(
               alignment: AlignmentDirectional.bottomEnd,
-             children: [
-               Container(
-                 margin: EdgeInsets.only(top: 30),
-                 height: MediaQuery.of(context).size.height * 0.23,
-                 width: 350,
-                 decoration: BoxDecoration(
-                   // color: Colors.red
-                 ),
-                 child: ClipRRect(
-                   borderRadius: BorderRadius.circular(10),
-                   child: Image.asset(
-                     widget.data['image_url'],
-                     fit: BoxFit.cover,
-                   ),),
-               ),
-               Container(
-                 height: MediaQuery.of(context).size.height * 0.08,
-                 width: 350,
-                 decoration: BoxDecoration(
-                     borderRadius: BorderRadius.only(
-                         bottomRight: Radius.circular(10),
-                         bottomLeft: Radius.circular(10)),
-                     color: Colors.white60),
-                 child: Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                   children: [
-                     Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                       child: Text(
-                         widget.data['name'],
-                         style: TextStyle(
-                             fontSize: 24,
-                             fontWeight: FontWeight.bold,
-                             color: Colors.black),
-                       ),
-                     ),
-                     Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: 20),
-                       child: Text(
-                         "\$" + widget.data['price'].toString(),
-                         style: TextStyle(
-                             fontSize: 24,
-                             fontWeight: FontWeight.bold,
-                             color: Colors.red),
-                       ),
-                     )
-                   ],
-                 ),
-               ),
-             ],
-           ),
-                if(widget.fromSearchPage == true) Container(
+              children: [
+                Container(
                   margin: EdgeInsets.only(top: 30),
+                  height: MediaQuery.of(context).size.height * 0.23,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      // color: Colors.red
+                      ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Image.asset(
+                      widget.data['image_url'],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  width: 350,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          bottomRight: Radius.circular(10),
+                          bottomLeft: Radius.circular(10)),
+                      color: Colors.white60),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          widget.data['name'],
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "\$" + widget.data['price'].toString(),
+                          style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            if (widget.fromSearchPage == true)
+              Container(
+                margin: EdgeInsets.only(top: 30),
                 // height: MediaQuery.of(context).size.height * 0.05,
                 color: Colors.white60,
                 child: Padding(
@@ -96,7 +101,6 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                   ),
                 ),
               ),
-
           ],
         ),
       ),
