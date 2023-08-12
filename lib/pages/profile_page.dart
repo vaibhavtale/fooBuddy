@@ -53,44 +53,41 @@ class _ProfilePageState extends State<ProfilePage> {
                             Column(
                               children: [
                                 CustomBtn(
-                                  text: "Edit profile",
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                EditProfile(data: data)));
-                                  },
-                                  icon: Icons.edit,
-                                  loading: _loading,
-                                ),
+                                    text: "Edit profile",
+                                    onTap: () async {
+                                      await Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditProfile(data: data)));
+                                      setState(() {});
+                                    },
+                                    icon: Icons.edit,
+                                    loading: _loading),
                                 CustomBtn(
-                                  text: "Recent orders",
-                                  onTap: () {},
-                                  icon: Icons.shopping_cart_outlined,
-                                  loading: _loading,
-                                ),
+                                    text: "Recent orders",
+                                    onTap: () {},
+                                    icon: Icons.shopping_cart_outlined,
+                                    loading: _loading),
                                 CustomBtn(
-                                  text: "Call us",
-                                  onTap: () {},
-                                  icon: Icons.call,
-                                  loading: _loading,
-                                ),
+                                    text: "Call us",
+                                    onTap: () {},
+                                    icon: Icons.call,
+                                    loading: _loading),
                                 CustomBtn(
-                                  text: "Logout",
-                                  onTap: () async {
-                                    if (!_loading) {
-                                      setState(() {
-                                        _loading = true;
-                                      });
-                                      await _auth.signOut();
-                                      setState(() {
-                                        _loading = false;
-                                      });
-                                    }
-                                  },
-                                  icon: Icons.arrow_right_alt,
-                                  loading: _loading,
-                                )
+                                    text: "Logout",
+                                    onTap: () async {
+                                      if (!_loading) {
+                                        setState(() {
+                                          _loading = true;
+                                        });
+                                        await _auth.signOut();
+                                        setState(() {
+                                          _loading = false;
+                                        });
+                                      }
+                                    },
+                                    icon: Icons.arrow_right_alt,
+                                    loading: _loading)
                               ],
                             )
                           ],
@@ -100,7 +97,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 }
               }
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }),
       ),
     );

@@ -1,19 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:foodbuddy/components/hotel_card.dart';
-import 'package:foodbuddy/components/menu_card.dart';
 import 'package:foodbuddy/components/menu_style.dart';
 import 'package:foodbuddy/pages/user_cart_page.dart';
 
-import '../components/custom_methods.dart';
-
 class MenuPage extends StatefulWidget {
-  final String hotelId;
-  final String hotelName;
+  final Map<String, dynamic>? data;
 
-  const MenuPage({Key? key, required this.hotelId, required this.hotelName})
-      : super(key: key);
+  const MenuPage({Key? key, required this.data}) : super(key: key);
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -22,77 +15,53 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   String searchQuery = '';
   final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-
-  List<Map<String, dynamic>> filteredMenuList(QuerySnapshot snapshot) {
-    if (searchQuery.isEmpty) {
-      return snapshot.docs
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    } else {
-      return snapshot.docs
-          .where(
-            (doc) => (doc['name'] as String)
-                .toLowerCase()
-                .contains(searchQuery.toLowerCase()),
-          )
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference menuCollection = FirebaseFirestore.instance
-        .collection('hotels')
-        .doc(widget.hotelId)
-        .collection('menu');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[300],
         elevation: 0,
         actions: [
           Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle, color: Colors.white54),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
-                child: IconButton(
-                    onPressed: () => Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => UserCart())),
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.deepOrangeAccent,
-                      size: 30,
-                    )),
-              ))
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: const BoxDecoration(
+                shape: BoxShape.rectangle, color: Colors.white54),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: IconButton(
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserCart())),
+                  icon: const Icon(Icons.shopping_cart,
+                      color: Colors.deepOrangeAccent, size: 30)),
+            ),
+          )
         ],
       ),
       body: FutureBuilder<QuerySnapshot>(
-          future: menuCollection.get(),
+          future: _firestore
+              .collection('menu')
+              .where('hotel_name', isEqualTo: widget.data!['name'])
+              .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              List<Map<String, dynamic>> menuList =
-                  filteredMenuList(snapshot.data!);
-
-              // removeDuplicatesFromSubcollection(widget.hotelId, 'menu');
+              List<Map<String, dynamic>> productList = snapshot.data!.docs
+                  .map((doc) => doc.data() as Map<String, dynamic>)
+                  .toList();
 
               return Stack(
                 alignment: Alignment.bottomCenter,
                 children: [
                   ListView.builder(
-                    itemCount: menuList.length,
+                    itemCount: productList.length,
                     itemBuilder: (context, index) {
-                      // MenuCard menuCard = filteredMenuList()[index];
-                      //addMenuToHotel(widget.hotelId, menuCard);
-                      Map<String, dynamic> menuData = menuList[index];
+                      Map<String, dynamic> menuData = productList[index];
 
                       return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: MyMenuStyle(
-                          data: menuData,
-                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: MyMenuStyle(data: menuData),
                       );
                     },
                   ),
@@ -117,14 +86,14 @@ class _MenuPageState extends State<MenuPage> {
                                       horizontal: 10),
                                   child: GestureDetector(
                                     onTap: () => setState(() {}),
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.search,
                                       size: 30,
                                       color: Colors.black,
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 5,
                                 ),
                                 Expanded(
@@ -132,7 +101,7 @@ class _MenuPageState extends State<MenuPage> {
                                     onChanged: (value) {
                                       searchQuery = value;
                                     },
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                         border: InputBorder.none),
                                   ),
                                 )
@@ -147,7 +116,7 @@ class _MenuPageState extends State<MenuPage> {
               );
             }
 
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }),

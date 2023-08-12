@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
 import '../components/menu_style.dart';
 
 class SearchScreenPage extends StatefulWidget {
@@ -13,37 +13,23 @@ class SearchScreenPage extends StatefulWidget {
 class _SearchScreenPageState extends State<SearchScreenPage> {
   String searchQuery = '';
   final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  List<Map<String, dynamic>>? _productList;
-
-  List<Map<String, dynamic>> filteredMenuList(QuerySnapshot snapshot) {
-    if (searchQuery.isEmpty) {
-      return [];
-    } else {
-      return snapshot.docs
-          .where(
-            (doc) => (doc['name'] as String)
-                .toLowerCase()
-                .contains(searchQuery.toLowerCase()),
-          )
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-            future: _firestore.collection('products').get(),
+            future: _firestore
+                .collection('menu')
+                .where('name', isEqualTo: searchQuery)
+                .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
-                _productList = filteredMenuList(snapshot.data!);
+                List<Map<String, dynamic>> productList =
+                    snapshot.data!.docs.map((doc) => doc.data()).toList();
                 return Center(
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Padding(
@@ -61,7 +47,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                               children: [
                                 GestureDetector(
                                   onTap: () => setState(() {}),
-                                  child: Icon(
+                                  child: const Icon(
                                     Icons.search,
                                     size: 30,
                                     color: Colors.redAccent,
@@ -75,7 +61,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                                     onChanged: (value) {
                                       searchQuery = value;
                                     },
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20, color: Colors.black),
                                     decoration: const InputDecoration(
                                       hintText: "Search",
@@ -95,10 +81,10 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                       searchQuery.isNotEmpty
                           ? Expanded(
                               child: ListView.builder(
-                                itemCount: _productList!.length,
+                                itemCount: productList.length,
                                 itemBuilder: (context, index) {
                                   Map<String, dynamic> menuData =
-                                      _productList![index];
+                                      productList[index];
                                   return MyMenuStyle(
                                     fromSearchPage: true,
                                     data: menuData,
@@ -106,20 +92,23 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                                 },
                               ),
                             )
-                          : Padding(
-                            padding: const EdgeInsets.only(top: 270),
-                            child: Center(
-                                child: Text("Search Tasty Food Here.", style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.pinkAccent,
-                                    fontSize: 20),),
+                          : const Padding(
+                              padding: EdgeInsets.only(top: 270),
+                              child: Center(
+                                child: Text(
+                                  "Search Tasty Food Here.",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.pinkAccent,
+                                      fontSize: 20),
+                                ),
                               ),
-                          )
+                            )
                     ],
                   ),
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }),

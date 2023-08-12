@@ -3,7 +3,6 @@ import 'package:foodbuddy/pages/home_page.dart';
 import 'package:foodbuddy/pages/profile_page.dart';
 import 'package:foodbuddy/pages/saved_items_page.dart';
 import 'package:foodbuddy/pages/search_page.dart';
-import 'package:foodbuddy/pages/toggle_page.dart';
 
 class MyNavigationBar extends StatefulWidget {
   const MyNavigationBar({Key? key}) : super(key: key);

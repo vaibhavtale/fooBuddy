@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:foodbuddy/pages/toggle_page.dart';
+import 'package:foodbuddy/my_bottom_nav_bar.dart';
+import 'package:foodbuddy/pages/login_page.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -15,27 +15,42 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-/*
-Platform  Firebase App Id
-web       1:293751067507:web:f89d226819c1a15bb5eb06
-android   1:293751067507:android:8c1f6c6705bea8bbb5eb06
-ios       1:293751067507:ios:cb4ffda2e06d301fb5eb06
-macos     1:293751067507:ios:21a24aee6bf2c3c1b5eb06
-*/
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
-  Future<void> simulatorAppLoading() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final _auth = FirebaseAuth.instance;
-    return MaterialApp(debugShowCheckedModeBanner: false, home: TogglePage()
-        // _auth.currentUser == null ? LoginPage() : MyNavigationBar(),
-        );
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: AuthCheck(),
+    );
+  }
+}
+
+class AuthCheck extends StatefulWidget {
+  const AuthCheck({Key? key}) : super(key: key);
+
+  @override
+  State<AuthCheck> createState() => _AuthCheckState();
+}
+
+class _AuthCheckState extends State<AuthCheck> {
+  final _auth = FirebaseAuth.instance;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: StreamBuilder<User?>(
+        stream: _auth.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return const MyNavigationBar();
+          } else {
+            return LoginPage();
+          }
+        },
+      ),
+    );
   }
 }

@@ -7,5 +7,5 @@ showMessage(BuildContext context, String message) =>
 popUpMessage(BuildContext context, String message) => showDialog(
     context: context,
     builder: (context) => AlertDialog(
-          title: Text("Please enter valid email address."),
+          title: Text(message),
         ));

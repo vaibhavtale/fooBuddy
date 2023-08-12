@@ -17,17 +17,15 @@ class MenuItemPage extends StatefulWidget {
 class _MenuItemPageState extends State<MenuItemPage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
-  int _itemCount = 0;
+  int _itemCount = 1;
 
   Future<void> _addItemToUserCart() async {
     // Add the item to the userCart list
     Map<String, dynamic> itemData = {
-      'hotel_id': widget.data['hotel_id'],
-      // Assuming 'hotelId' is a unique identifier for the hotel
       'name': widget.data['name'],
       'image_url': widget.data['image_url'],
       'price': widget.data['price'],
-      'quantity': _itemCount,
+      'item_count': _itemCount,
     };
 
     final docs = await _firestore
@@ -36,39 +34,29 @@ class _MenuItemPageState extends State<MenuItemPage> {
         .get();
 
     final docId = docs.docs.first.id;
+    List<dynamic> userCartList = docs.docs.first['userCart'];
 
-    List<dynamic> userCart = docs.docs.first['userCart'];
+    int existIndex =
+        userCartList.indexWhere((item) => item['name'] == itemData['name']);
 
-    // Check if the item with the same 'hotelId' already exists in userCart
-    bool itemExists = false;
-    for (var i = 0; i < userCart.length; i++) {
-      if (userCart[i]['hotel_id'] == itemData['hotel_id']) {
-        itemExists = true;
-
-        // Update the itemCount of the existing item
-        userCart[i]['quantity'] = _itemCount;
-        break;
-      }
+    if (existIndex == -1) {
+      userCartList.add(itemData);
+    } else {
+      userCartList[existIndex]['item_count'] = _itemCount;
     }
 
-    // If the item doesn't exist, add it to the cart
-    if (!itemExists) {
-      userCart.add(itemData);
-    }
-
-    // Use the update() method to update the userCart list
     try {
       await _firestore.collection('users').doc(docId).update({
-        'userCart': userCart,
+        'userCart': userCartList,
       });
-      showMessage(context, 'Product added to UserCart successfully.');
+      showMessage(context, 'successfully added item to user cart');
     } catch (e) {
-      print(e.toString());
+      showMessage(context, 'failed to add item');
     }
   }
 
-  void _incrementCounter(bool icreament) {
-    icreament ? _itemCount++ : _itemCount--;
+  void _incrementCounter(bool increment) {
+    increment ? _itemCount++ : _itemCount--;
   }
 
   Future<void> _addItemToSavedList() async {
@@ -76,8 +64,8 @@ class _MenuItemPageState extends State<MenuItemPage> {
       'name': widget.data['name'],
       'image_url': widget.data['image_url'],
       'price': widget.data['price'],
-      'quantity': _itemCount,
-      'hotel_id' : widget.data['hotel_id'],
+      'item_count': _itemCount,
+      'hotel_id': widget.data['hotel_id'],
     };
 
     final docs = await _firestore
@@ -86,203 +74,191 @@ class _MenuItemPageState extends State<MenuItemPage> {
         .get();
 
     final docId = docs.docs.first.id;
-    print(docId);
-
     List<dynamic> savedItems = docs.docs.first['savedItems'];
 
-    // Check if the item with the same 'name' already exists in savedItems
-    bool itemExists = false;
-    for (var i = 0; i < savedItems.length; i++) {
-      if (savedItems[i]['name'] == itemData['name']) {
-        itemExists = true;
+    int existIndex =
+        savedItems.indexWhere((item) => item['name'] == itemData['name']);
 
-        // Update the quantity of the existing item
-        savedItems[i]['quantity'] = _itemCount;
-        break;
-      }
-    }
-
-    // If the item doesn't exist, add it to the list
-    if (!itemExists) {
+    if (existIndex == -1) {
       savedItems.add(itemData);
+    } else {
+      savedItems[existIndex]['item_count'] = _itemCount;
     }
 
-    // Use the update() method to update the savedItems list
     try {
       await _firestore.collection('users').doc(docId).update({
         'savedItems': savedItems,
       });
       showMessage(context, 'Product added to savedList successfully.');
     } catch (e) {
-      print(e.toString());
+      e.toString();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              future: _firestore
-                  .collection('users')
-                  .where('email', isEqualTo: _auth.currentUser!.email)
-                  .get(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.done) {
-                  final menuData = snapshot.data!.docs.first.data();
-                  return Center(
-                    child: Column(
+        appBar: AppBar(),
+        body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          future: _firestore
+              .collection('users')
+              .where('email', isEqualTo: _auth.currentUser!.email)
+              .get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              // final menuData = snapshot.data!.docs.first.data();
+              return Center(
+                child: Column(
+                  children: [
+                    Container(
+                      height: MediaQuery.of(context).size.height * 0.50,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        gradient:
+                            LinearGradient(colors: [Colors.red, Colors.pink]),
+                      ),
+                      child: Image.asset(
+                        widget.data['image_url'],
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.50,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            gradient: LinearGradient(colors: [Colors.red, Colors.pink]),
-                          ),
-                          child: Image.asset(
-                            widget.data['image_url'],
-                            fit: BoxFit.contain,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Text(
+                            widget.data['name'],
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 25),
-                              child: Text(
-                                widget.data['name'],
-                                style: TextStyle(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25),
+                          child: Text("\$${widget.data['price']}",
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 25),
-                              child: Text("\$" + widget.data['price'].toString(),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.red)),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 60,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: [
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Text(
-                                  "Quantity : ",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                      color: Colors.red),
-                                ),
-                                SizedBox(width: 50,),
-                                Row(
-
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          _incrementCounter(true);
-                                        });
-                                      },
-                                      child: CustomCircularButton(
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(10),
-                                      child: Center(
-                                        child: Text(_itemCount.toString()),
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      width: 20,
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        if (_itemCount <= 0) return;
-                                        setState(() {
-                                          _incrementCounter(false);
-                                        });
-                                      },
-                                      child: CustomCircularButton(
-                                        icon: Icon(
-                                          Icons.minimize_outlined,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            )
-//
-
-
-                          ],
-                        ),
-                        SizedBox(
-                          height: 70,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            GestureDetector(
-                              onTap: () => _auth.currentUser != null
-                                  ? _addItemToSavedList()
-                                  : Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage(
-                                        fromMenuItemPage: true,
-                                      ))),
-                              child: CustomGradientButton(
-                                text: 'Save',
-                                gradient: true,
-                              ),
-                            ),
-                            GestureDetector(
-                                onTap: () => _auth.currentUser != null
-                                    ? _addItemToUserCart()
-                                    : Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => LoginPage(
-                                          fromMenuItemPage: true,
-                                        ))),
-                                child: CustomNonGradientButton(text: "Add Cart")),
-                          ],
+                                  color: Colors.red)),
                         ),
                       ],
                     ),
-                  );
-                }
-                return Center(child: CircularProgressIndicator(),);
-              },
-            )
-    );
+                    const SizedBox(
+                      height: 60,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text(
+                              "Quantity : ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  color: Colors.red),
+                            ),
+                            const SizedBox(
+                              width: 50,
+                            ),
+                            Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      _incrementCounter(true);
+                                    });
+                                  },
+                                  child: const CustomCircularButton(
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Center(
+                                    child: Text(_itemCount.toString()),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (_itemCount <= 0) return;
+                                    setState(() {
+                                      _incrementCounter(false);
+                                    });
+                                  },
+                                  child: const CustomCircularButton(
+                                    icon: Icon(
+                                      Icons.minimize_outlined,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        )
+//
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 70,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () => _auth.currentUser != null
+                              ? _addItemToSavedList()
+                              : Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => LoginPage(
+                                            fromMenuItemPage: true,
+                                          ))),
+                          child: const CustomGradientButton(
+                            text: 'Save',
+                            gradient: true,
+                          ),
+                        ),
+                        GestureDetector(
+                            onTap: () => _auth.currentUser != null
+                                ? _addItemToUserCart()
+                                : Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage(
+                                              fromMenuItemPage: true,
+                                            ))),
+                            child: const CustomNonGradientButton(
+                                text: "Add Cart")),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
   }
 }

@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passWordController.text.trim(),
       );
-      showMessage(context, 'logged in succesfully as ${_emailController.text}');
+      showMessage(context, 'logged in successfully as ${_emailController.text}');
       widget.fromMenuItemPage != null ? Navigator.of(context).pop() : null;
     } catch (e) {
       showDialog(
@@ -71,130 +71,130 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              CustomGradientText(
-                text: 'Hey Buddy',
-              ),
-              SizedBox(
-                height: 25,
-              ),
-              const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "log in",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "celebrate the foodie in you.",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              CustomTextField(text: "email", textController: _emailController),
-              CustomTextField(
-                text: "password",
-                textController: _passWordController,
-                obscure: true,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () => signIn(),
-                child: CustomGradientButton(text: "Login"),
-              ),
-              SizedBox(
-                height: 7,
-              ),
-              GestureDetector(
-                onTap: () {
-                  _resetPasswordController.clear();
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: Text(
-                        "Reset Password",
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      content: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            "Email will be sent with a \nlink please follow that to \nreset password.",
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Colors.grey[200],
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20),
-                              child: TextField(
-                                controller: _resetPasswordController,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: "Email",
-                                ),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 40,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            const CustomGradientText(
+              text: 'Hey Buddy',
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "log in",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  "celebrate the foodie in you.",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 30,
+            ),
+            CustomTextField(text: "email", textController: _emailController),
+            CustomTextField(
+              text: "password",
+              textController: _passWordController,
+              obscure: true,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: () async {
+                await signIn();
+              },
+              child: const CustomGradientButton(text: "Login"),
+            ),
+            const SizedBox(
+              height: 7,
+            ),
+            GestureDetector(
+              onTap: () {
+                _resetPasswordController.clear();
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: const Text(
+                      "Reset Password",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    content: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text(
+                          "Email will be sent with a \nlink please follow that to \nreset password.",
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20),
+                            child: TextField(
+                              controller: _resetPasswordController,
+                              decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: "Email",
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.of(context).pop(),
-                          child: Text(
-                            "cancel",
                           ),
-                        ),
-                        TextButton(
-                            onPressed: () => resetPassword(),
-                            child: Text("send link"))
+                        )
                       ],
                     ),
-                  );
-                },
-                child: Text(
-                  "Forgot Password?",
-                  style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          "cancel",
+                        ),
+                      ),
+                      TextButton(
+                          onPressed: () => resetPassword(),
+                          child: Text("send link"))
+                    ],
+                  ),
+                );
+              },
+              child: const Text(
+                "Forgot Password?",
+                style: TextStyle(fontSize: 18, color: Colors.blueAccent),
               ),
-              SizedBox(
-                height: 20,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPage())),
+              child: const CustomGradientButton(
+                text: 'Create New Account',
+                gradient: true,
               ),
-              GestureDetector(
-                onTap: () => Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => RegisterPage())),
-                child: CustomGradientButton(
-                  text: 'Create New Account',
-                  gradient: true,
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

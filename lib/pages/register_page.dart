@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/custom_textfield.dart';
-import 'package:foodbuddy/pages/toggle_page.dart';
+import 'package:foodbuddy/main.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -24,9 +24,9 @@ class _RegisterPageState extends State<RegisterPage> {
     String phoneNumber = _phoneController.text.replaceAll(RegExp(r'[^\d]'), '');
     if (phoneNumber.length != 10) {
       showMessage(context, 'please Enter correct 10-digit phone Number.');
-    } else if (_nameController.text.length == 0) {
+    } else if (_nameController.text.isEmpty) {
       showMessage(context, 'please Enter your name.');
-    } else if (_addressController.text.length == 0) {
+    } else if (_addressController.text.isEmpty) {
       showMessage(context, 'please Enter your current address.');
     } else {
       try {
@@ -35,13 +35,11 @@ class _RegisterPageState extends State<RegisterPage> {
           password: _passWordController.text.trim(),
         );
 
-        print(_emailController.text.trim());
-
         await addUserDetails();
 
         Navigator.of(context).pop(
           MaterialPageRoute(
-            builder: (context) => TogglePage(),
+            builder: (context) => const AuthCheck(),
           ),
         );
       } catch (e) {
@@ -58,7 +56,6 @@ class _RegisterPageState extends State<RegisterPage> {
         } else {
           showMessage(context, 'An error occurred while registering.');
         }
-        print(e.toString());
       }
     }
     return null;
@@ -76,7 +73,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future addUserDetails() async {
     final customUID = FirebaseAuth.instance.currentUser!.uid;
-    print(customUID);
     await FirebaseFirestore.instance.collection('users').doc(customUID).set({
       "email": _emailController.text.trim(),
       "phone_number": _phoneController.text.trim(),
@@ -94,23 +90,23 @@ class _RegisterPageState extends State<RegisterPage> {
         child: Center(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              CustomGradientText(text: "Welcome Buddy"),
-              Center(
+              const CustomGradientText(text: "Welcome Buddy"),
+              const Center(
                 child: Text(
                   "Create A New Account",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               CustomTextField(text: "name", textController: _nameController),
@@ -124,19 +120,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 textController: _passWordController,
                 obscure: true,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               GestureDetector(
                 onTap: () => createUser(),
-                child: CustomGradientButton(text: "SignUp"),
+                child: const CustomGradientButton(text: "SignUp"),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               GestureDetector(
                 onTap: () => Navigator.of(context).pop(),
-                child: CustomGradientButton(
+                child: const CustomGradientButton(
                   text: "Back To Login",
                   gradient: true,
                 ),

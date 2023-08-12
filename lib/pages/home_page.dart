@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
-import 'package:foodbuddy/components/hotel_card.dart';
 import 'package:foodbuddy/pages/user_cart_page.dart';
 
 import '../components/hotel_style.dart';
@@ -16,27 +14,24 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
-  int _itemCount = 0;
+  final int _itemCount = 0;
 
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
-          title: CustomGradientText(
+          title: const CustomGradientText(
             text: "FoodBuddy Online",
           ),
           actions: [
             GestureDetector(
-              onTap: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => UserCart())),
+              onTap: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const UserCart())),
               child: Container(
-                margin: EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 5
-                ),
+                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 color: Colors.amberAccent,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -44,7 +39,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Text(
                     _itemCount.toString(),
-                    style: TextStyle(color: Colors.black, fontSize: 30),
+                    style: const TextStyle(color: Colors.black, fontSize: 30),
                   ),
                 ),
               ),
@@ -52,16 +47,26 @@ class _HomePageState extends State<HomePage> {
           ],
           elevation: 0,
         ),
-        body: ListView.builder(
-          itemCount: hotelList.length,
-          itemBuilder: (context, index) {
-            HotelCard hotelcard = hotelList[index];
+        body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          future: _firestore.collection('hotels').get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              final hotelDocs = snapshot.data!.docs;
 
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: HotelStyle(
-                hotelCard: hotelcard,
-              ),
+              return ListView.builder(
+                itemCount: hotelDocs.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> data = hotelDocs[index].data();
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: HotelStyle(data: data,),
+                  );
+                },
+              );
+            }
+
+            return const Center(
+              child: CircularProgressIndicator(),
             );
           },
         )

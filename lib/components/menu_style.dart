@@ -18,13 +18,9 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
     return Center(
       child: GestureDetector(
         onTap: () {
-          print('-------------------------------------------------------');
-          print(widget.data);
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => MenuItemPage(
-                data: widget.data,
-              ),
+              builder: (context) => MenuItemPage(data: widget.data),
             ),
           );
         },
@@ -35,10 +31,10 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               alignment: AlignmentDirectional.bottomEnd,
               children: [
                 Container(
-                  margin: EdgeInsets.only(top: 30),
+                  margin: const EdgeInsets.only(top: 30),
                   height: MediaQuery.of(context).size.height * 0.23,
                   width: 350,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       // color: Colors.red
                       ),
                   child: ClipRRect(
@@ -52,7 +48,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                 Container(
                   height: MediaQuery.of(context).size.height * 0.08,
                   width: 350,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
                           bottomRight: Radius.circular(10),
                           bottomLeft: Radius.circular(10)),
@@ -64,7 +60,7 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
                           widget.data['name'],
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.black),
@@ -73,8 +69,8 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Text(
-                          "\$" + widget.data['price'].toString(),
-                          style: TextStyle(
+                          "\$${widget.data['price']}",
+                          style: const TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
                               color: Colors.red),
@@ -87,14 +83,14 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
             ),
             if (widget.fromSearchPage == true)
               Container(
-                margin: EdgeInsets.only(top: 30),
+                margin: const EdgeInsets.only(top: 30),
                 // height: MediaQuery.of(context).size.height * 0.05,
                 color: Colors.white60,
                 child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                   child: Text(
                     widget.data['hotel_name'],
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
@@ -105,6 +101,5 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
         ),
       ),
     );
-    ;
   }
 }
