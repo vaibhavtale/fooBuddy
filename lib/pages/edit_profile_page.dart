@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -6,13 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
 import 'package:foodbuddy/components/profile_with_icon.dart';
 import 'package:image_picker/image_picker.dart';
+
 import '../components/custom_gradient_text.dart';
-import '../components/custom_textfield.dart';
+import '../components/custom_text_field.dart';
 
 class EditProfile extends StatefulWidget {
   final Map<String, dynamic> data;
 
-  EditProfile({Key? key, required this.data}) : super(key: key);
+  const EditProfile({Key? key, required this.data}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -56,15 +58,24 @@ class _EditProfileState extends State<EditProfile> {
 
     Reference referenceRoot = FirebaseStorage.instance.ref();
     Reference imagePath = referenceRoot
-        .child('user')
-        .child(_auth.currentUser!.uid)
-        .child('profile_image');
+        .child(
+          'user',
+        )
+        .child(
+          _auth.currentUser!.uid,
+        )
+        .child(
+          'profile_image',
+        );
 
     try {
       await imagePath.putFile(image!);
       imageUrl = await imagePath.getDownloadURL();
     } catch (e) {
-      showMessage(context, "Error uploading image: $e");
+      showMessage(
+        context,
+        "Error uploading image: $e",
+      );
     }
   }
 
@@ -89,7 +100,6 @@ class _EditProfileState extends State<EditProfile> {
           .get();
 
       final docId = docs.docs.first.id;
-      print(docId);
       await _firestore.collection('users').doc(docId).update(userData);
 
       Navigator.of(context).pop();
@@ -116,49 +126,81 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 80),
-            CustomGradientText(text: "Edit Profile"),
+            const SizedBox(
+              height: 80,
+            ),
+            const CustomGradientText(
+              text: "Edit Profile",
+            ),
             ProfileIconWithName(
-                name: _nameController.text,
-                imageUrl: image?.path ??
-                    'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
-                email: widget.data['email'],
-                onTap: () async {
-                  if (!_isLoading) {
-                    _isLoading = true;
-                    await _takePhotoFromGallery(ImageSource.gallery);
-                    _isLoading = false;
-                  }
-                },
-                isEditable: true),
-            SizedBox(height: 30),
-            CustomTextField(text: "name", textController: _nameController),
+              name: _nameController.text,
+              imageUrl: image?.path ??
+                  'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
+              email: widget.data['email'],
+              onTap: () async {
+                if (!_isLoading) {
+                  _isLoading = true;
+                  await _takePhotoFromGallery(
+                    ImageSource.gallery,
+                  );
+                  _isLoading = false;
+                }
+              },
+              isEditable: true,
+            ),
+            const SizedBox(
+              height: 30,
+            ),
             CustomTextField(
-                text: "address", textController: _addressController),
-            CustomTextField(text: "email", textController: _emailController),
+              text: "name",
+              textController: _nameController,
+            ),
             CustomTextField(
-                text: "phone number", textController: _phoneController),
-            SizedBox(height: 10),
+              text: "address",
+              textController: _addressController,
+            ),
+            CustomTextField(
+              text: "email",
+              textController: _emailController,
+            ),
+            CustomTextField(
+              text: "phone number",
+              textController: _phoneController,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
             GestureDetector(
               onTap: () async {
                 if (!_isLoading) {
-                  setState(() {
-                    _isLoading = true;
-                  });
+                  setState(
+                    () {
+                      _isLoading = true;
+                    },
+                  );
                   await _updateUserData();
-                  setState(() {
-                    _isLoading = false;
-                  });
+                  setState(
+                    () {
+                      _isLoading = false;
+                    },
+                  );
                 }
               },
               child: _isLoading
                   ? const CircularProgressIndicator()
-                  : const CustomGradientButton(text: "Apply Changes"),
+                  : const CustomGradientButton(
+                      text: "Apply Changes",
+                    ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(
+              height: 20,
+            ),
             GestureDetector(
               onTap: () => Navigator.of(context).pop(),
-              child: CustomGradientButton(text: "Cancel", gradient: true),
+              child: const CustomGradientButton(
+                text: "Cancel",
+                gradient: true,
+              ),
             ),
           ],
         ),

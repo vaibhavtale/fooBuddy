@@ -15,30 +15,49 @@ class SavedItemsPage extends StatefulWidget {
 class _SavedItemsPageState extends State<SavedItemsPage> {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
+  Map<String, dynamic>? data;
 
   Future<void> _updateSavedItemsList(
       Map<String, dynamic> data, int index) async {
-    final List<dynamic> _savedList = data['savedItems'];
+    final List<dynamic> savedList = data['savedItems'];
 
-    _savedList.removeAt(index);
+    savedList.removeAt(index);
 
     final userData = {
-      'savedItems': _savedList,
+      'savedItems': savedList,
     };
 
     try {
       final docs = await _firestore
-          .collection('users')
-          .where('email', isEqualTo: _auth.currentUser!.email)
+          .collection(
+            'users',
+          )
+          .where(
+            'email',
+            isEqualTo: _auth.currentUser!.email,
+          )
           .get();
 
       final docId = docs.docs.first.id;
 
-      await _firestore.collection('users').doc(docId).update(userData);
-      setState(() {});
-      showMessage(context, 'Success SavedList has been updated successfully');
+      await _firestore
+          .collection(
+            'users',
+          )
+          .doc(docId)
+          .update(userData);
+      setState(
+        () {},
+      );
+      showMessage(
+        context,
+        'Success SavedList has been updated successfully',
+      );
     } catch (e) {
-      showMessage(context, "Error updating savedList: $e");
+      showMessage(
+        context,
+        "Error updating savedList: $e",
+      );
     }
   }
 
@@ -46,32 +65,49 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Saved Items"),
+        title: const Text(
+          "Saved Items",
+        ),
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: _firestore
-            .collection('users')
-            .where('email', isEqualTo: _auth.currentUser!.email)
+            .collection(
+              'users',
+            )
+            .where(
+              'email',
+              isEqualTo: _auth.currentUser!.email,
+            )
             .get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              final data = snapshot.data!.docs.first.data();
-              List listOfSavedItems = data['savedItems'];
+              data = snapshot.data!.docs.first.data();
+              final id = snapshot.data!.docs.first.id;
+              List listOfSavedItems = data!['savedItems'];
               return listOfSavedItems.isNotEmpty
                   ? ListView.builder(
-                      itemCount: data['savedItems'].length,
+                      itemCount: listOfSavedItems.length,
                       itemBuilder: (context, index) {
                         return CustomListTile(
-                            data: data,
-                            index: index,
-                            onTap: _updateSavedItemsList);
+                          data: data!,
+                          index: index,
+                          onTap: _updateSavedItemsList,
+                          id: id,
+                          fromSavedPage: true,
+                        );
                       },
                     )
-                  : const Center(child: Text("No saved Items."));
+                  : const Center(
+                      child: Text(
+                        "No saved Items.",
+                      ),
+                    );
             }
           }
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         },
       ),
     );

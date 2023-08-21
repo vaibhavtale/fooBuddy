@@ -20,35 +20,52 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[300],
-        elevation: 0,
-        actions: [
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            decoration: const BoxDecoration(
-                shape: BoxShape.rectangle, color: Colors.white54),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: IconButton(
-                  onPressed: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const UserCart())),
-                  icon: const Icon(Icons.shopping_cart,
-                      color: Colors.deepOrangeAccent, size: 30)),
+          title: Center(
+            child: Text(
+              widget.data!['name'],
+              style: const TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-          )
-        ],
-      ),
-      body: FutureBuilder<QuerySnapshot>(
+          ),
+          backgroundColor: Colors.lightGreen[300],
+          elevation: 0,
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserCart(),
+                  ),
+                ),
+                icon: const Icon(
+                  Icons.shopping_cart,
+                  color: Colors.black,
+                  weight: 800,
+                  size: 30,
+                ),
+              ),
+            ),
+          ]),
+      body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
           future: _firestore
-              .collection('menu')
-              .where('hotel_name', isEqualTo: widget.data!['name'])
+              .collection(
+                'menu',
+              )
+              .where(
+                'hotel_name',
+                isEqualTo: widget.data!['name'],
+              )
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               List<Map<String, dynamic>> productList = snapshot.data!.docs
-                  .map((doc) => doc.data() as Map<String, dynamic>)
+                  .map(
+                    (doc) => doc.data(),
+                  )
                   .toList();
 
               return Stack(
@@ -57,11 +74,17 @@ class _MenuPageState extends State<MenuPage> {
                   ListView.builder(
                     itemCount: productList.length,
                     itemBuilder: (context, index) {
-                      Map<String, dynamic> menuData = productList[index];
-
+                      final doc = snapshot.data!.docs[index];
+                      Map<String, dynamic> menuData = doc.data();
+                      String docId = doc.id; // This is the document ID
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: MyMenuStyle(data: menuData),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        child: MyMenuStyle(
+                          data: menuData,
+                          id: docId,
+                        ),
                       );
                     },
                   ),
@@ -71,21 +94,28 @@ class _MenuPageState extends State<MenuPage> {
                     child: Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 40,
+                          ),
                           child: Container(
                             height: 50,
                             width: 270,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(
+                                15,
+                              ),
                               color: Colors.white70,
                             ),
                             child: Row(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                    horizontal: 10,
+                                  ),
                                   child: GestureDetector(
-                                    onTap: () => setState(() {}),
+                                    onTap: () => setState(
+                                      () {},
+                                    ),
                                     child: const Icon(
                                       Icons.search,
                                       size: 30,
@@ -102,16 +132,17 @@ class _MenuPageState extends State<MenuPage> {
                                       searchQuery = value;
                                     },
                                     decoration: const InputDecoration(
-                                        border: InputBorder.none),
+                                      border: InputBorder.none,
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               );
             }

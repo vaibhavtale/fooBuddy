@@ -2,13 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_methods.dart';
-import 'package:foodbuddy/components/custom_textfield.dart';
+import 'package:foodbuddy/components/custom_text_field.dart';
 import 'package:foodbuddy/pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   final bool? fromMenuItemPage;
 
-  LoginPage({Key? key, this.fromMenuItemPage}) : super(key: key);
+  const LoginPage({Key? key, this.fromMenuItemPage}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -41,13 +41,18 @@ class _LoginPageState extends State<LoginPage> {
         email: _emailController.text.trim(),
         password: _passWordController.text.trim(),
       );
-      showMessage(context, 'logged in successfully as ${_emailController.text}');
+      showMessage(
+        context,
+        'logged in successfully as ${_emailController.text}',
+      );
       widget.fromMenuItemPage != null ? Navigator.of(context).pop() : null;
     } catch (e) {
       showDialog(
         context: context,
         builder: (context) => const AlertDialog(
-          title: Text("Please enter valid credentials."),
+          title: Text(
+            "Please enter valid credentials.",
+          ),
         ),
       );
     }
@@ -55,8 +60,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future resetPassword() async {
-    await FirebaseAuth.instance
-        .sendPasswordResetEmail(email: _resetPasswordController.text.trim());
+    await FirebaseAuth.instance.sendPasswordResetEmail(
+      email: _resetPasswordController.text.trim(),
+    );
     Navigator.of(context).pop();
   }
 
@@ -91,21 +97,30 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 Text(
                   "log in",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 SizedBox(
                   height: 5,
                 ),
                 Text(
                   "celebrate the foodie in you.",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
             ),
             const SizedBox(
               height: 30,
             ),
-            CustomTextField(text: "email", textController: _emailController),
+            CustomTextField(
+              text: "email",
+              textController: _emailController,
+            ),
             CustomTextField(
               text: "password",
               textController: _passWordController,
@@ -118,7 +133,9 @@ class _LoginPageState extends State<LoginPage> {
               onTap: () async {
                 await signIn();
               },
-              child: const CustomGradientButton(text: "Login"),
+              child: const CustomGradientButton(
+                text: "Login",
+              ),
             ),
             const SizedBox(
               height: 7,
@@ -132,9 +149,10 @@ class _LoginPageState extends State<LoginPage> {
                     title: const Text(
                       "Reset Password",
                       style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
                     content: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,11 +166,11 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(12)),
+                            color: Colors.grey[200],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                           child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: TextField(
                               controller: _resetPasswordController,
                               decoration: const InputDecoration(
@@ -172,23 +190,33 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       TextButton(
-                          onPressed: () => resetPassword(),
-                          child: Text("send link"))
+                        onPressed: () => resetPassword(),
+                        child: const Text(
+                          "send link",
+                        ),
+                      )
                     ],
                   ),
                 );
               },
               child: const Text(
                 "Forgot Password?",
-                style: TextStyle(fontSize: 18, color: Colors.blueAccent),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.blueAccent,
+                ),
               ),
             ),
             const SizedBox(
               height: 20,
             ),
             GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => RegisterPage())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                ),
+              ),
               child: const CustomGradientButton(
                 text: 'Create New Account',
                 gradient: true,

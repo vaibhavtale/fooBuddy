@@ -19,8 +19,10 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
       child: Scaffold(
         body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
             future: _firestore
-                .collection('menu')
-                .where('name', isEqualTo: searchQuery)
+                .collection(
+                  'menu',
+                )
+                .where('name', isGreaterThanOrEqualTo: searchQuery)
                 .get(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
@@ -33,12 +35,19 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                         height: 30,
                       ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 25,
+                        ),
                         child: Container(
                           height: 60,
                           decoration: BoxDecoration(
-                              border: Border.all(color: Colors.redAccent),
-                              borderRadius: BorderRadius.circular(30)),
+                            border: Border.all(
+                              color: Colors.redAccent,
+                            ),
+                            borderRadius: BorderRadius.circular(
+                              30,
+                            ),
+                          ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,
@@ -62,13 +71,16 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                                       searchQuery = value;
                                     },
                                     style: const TextStyle(
-                                        fontSize: 20, color: Colors.black),
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
                                     decoration: const InputDecoration(
                                       hintText: "Search",
                                       hintStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.pinkAccent,
-                                          fontSize: 24),
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.pinkAccent,
+                                        fontSize: 24,
+                                      ),
                                       border: InputBorder.none,
                                     ),
                                   ),
@@ -88,22 +100,26 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                                   return MyMenuStyle(
                                     fromSearchPage: true,
                                     data: menuData,
+                                    id: '',
                                   );
                                 },
                               ),
                             )
                           : const Padding(
-                              padding: EdgeInsets.only(top: 270),
+                              padding: EdgeInsets.only(
+                                top: 270,
+                              ),
                               child: Center(
                                 child: Text(
                                   "Search Tasty Food Here.",
                                   style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.pinkAccent,
-                                      fontSize: 20),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.pinkAccent,
+                                    fontSize: 20,
+                                  ),
                                 ),
                               ),
-                            )
+                            ),
                     ],
                   ),
                 );

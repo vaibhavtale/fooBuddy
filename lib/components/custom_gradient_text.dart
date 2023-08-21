@@ -10,11 +10,11 @@ class CustomGradientText extends StatelessWidget {
   Widget build(BuildContext context) {
     return GradientText(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 35,
         fontWeight: FontWeight.bold,
       ),
-      colors: [Colors.red, Colors.orange],
+      colors: const [Colors.red, Colors.orange],
     );
   }
 }
@@ -34,7 +34,7 @@ class CustomGradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: gradient == null
-            ? LinearGradient(colors: [
+            ? const LinearGradient(colors: [
                 Colors.orangeAccent,
                 Colors.deepOrangeAccent,
               ], begin: Alignment.bottomLeft, end: Alignment.topRight)
@@ -78,7 +78,7 @@ class CustomNonGradientButton extends StatelessWidget {
       child: Center(
         child: Text(
           text,
-          style: TextStyle(fontSize: 22, color: Colors.white),
+          style: const TextStyle(fontSize: 22, color: Colors.white),
         ),
       ),
     );
@@ -94,7 +94,7 @@ class CustomCircularButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration:
-          BoxDecoration(shape: BoxShape.circle, color: Colors.deepOrange),
+          const BoxDecoration(shape: BoxShape.circle, color: Colors.deepOrange),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(child: icon),

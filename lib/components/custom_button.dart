@@ -23,9 +23,14 @@ class CustomBtn extends StatelessWidget {
         width: 300,
         height: 50,
         margin: const EdgeInsets.all(10.0),
-        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          vertical: 12.0,
+          horizontal: 20,
+        ),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(
+            15,
+          ),
           gradient: const LinearGradient(
             colors: [Colors.pinkAccent, Colors.orangeAccent],
             begin: Alignment.bottomLeft,
@@ -42,9 +47,10 @@ class CustomBtn extends StatelessWidget {
                   Text(
                     text,
                     style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w300),
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w300,
+                    ),
                   ),
                   if (icon != null)
                     Icon(

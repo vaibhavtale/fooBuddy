@@ -16,10 +16,8 @@ class _HomePageState extends State<HomePage> {
   final _firestore = FirebaseFirestore.instance;
   final int _itemCount = 0;
 
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -28,10 +26,19 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             GestureDetector(
-              onTap: () => Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const UserCart())),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserCart(),
+                ),
+              ),
               child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                margin: const EdgeInsets.only(
+                  left: 10,
+                  right: 10,
+                  top: 5,
+                  bottom: 15,
+                ),
                 color: Colors.amberAccent,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -39,7 +46,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   child: Text(
                     _itemCount.toString(),
-                    style: const TextStyle(color: Colors.black, fontSize: 30),
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 30,
+                    ),
                   ),
                 ),
               ),
@@ -58,8 +68,12 @@ class _HomePageState extends State<HomePage> {
                 itemBuilder: (context, index) {
                   Map<String, dynamic> data = hotelDocs[index].data();
                   return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: HotelStyle(data: data,),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    child: HotelStyle(
+                      data: data,
+                    ),
                   );
                 },
               );
