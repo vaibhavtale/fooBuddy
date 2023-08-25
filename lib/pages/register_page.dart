@@ -120,77 +120,109 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Column(
-            children: [
-              const SizedBox(
-                height: 40,
+      backgroundColor: Colors.pink[50],
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.12,
+                vertical: MediaQuery.of(context).size.height * 0.11,
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const CustomGradientText(
-                text: "Welcome Buddy",
-              ),
-              const Center(
-                child: Text(
-                  "Create A New Account",
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(
+                    15,
+                  ),
+                  image: const DecorationImage(
+                    image: AssetImage(
+                      'images/login.png',
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.pink[100]!.withOpacity(
+                        1,
+                      ), // Shadow color
+                      spreadRadius: 9, // How much the shadow spreads
+                      blurRadius: 15, // How blurry the shadow is
+                      offset: const Offset(
+                        1,
+                        5,
+                      ),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 70,
+                      ),
+                      const Center(
+                        child: Text(
+                          "Create new account",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      CustomTextField(
+                        text: "name",
+                        textController: _nameController,
+                      ),
+                      CustomTextField(
+                        text: "address",
+                        textController: _addressController,
+                      ),
+                      CustomTextField(
+                        text: "email",
+                        textController: _emailController,
+                      ),
+                      CustomTextField(
+                        text: "phone number",
+                        textController: _phoneController,
+                      ),
+                      CustomTextField(
+                        text: "password",
+                        textController: _passWordController,
+                        obscure: true,
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () => createUser(),
+                        child: const CustomGradientButton(
+                          text: "SignUp",
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const CustomGradientButton(
+                          text: "Back To Login",
+                          gradient: true,
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 70,
+                      )
+                    ],
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
-              CustomTextField(
-                text: "name",
-                textController: _nameController,
-              ),
-              CustomTextField(
-                text: "address",
-                textController: _addressController,
-              ),
-              CustomTextField(
-                text: "email",
-                textController: _emailController,
-              ),
-              CustomTextField(
-                text: "phone number",
-                textController: _phoneController,
-              ),
-              CustomTextField(
-                text: "password",
-                textController: _passWordController,
-                obscure: true,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              GestureDetector(
-                onTap: () => createUser(),
-                child: const CustomGradientButton(
-                  text: "SignUp",
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: const CustomGradientButton(
-                  text: "Back To Login",
-                  gradient: true,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

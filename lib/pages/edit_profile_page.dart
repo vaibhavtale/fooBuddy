@@ -122,88 +122,98 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 80,
-            ),
-            const CustomGradientText(
-              text: "Edit Profile",
-            ),
-            ProfileIconWithName(
-              name: _nameController.text,
-              imageUrl: image?.path ??
-                  'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
-              email: widget.data['email'],
-              onTap: () async {
-                if (!_isLoading) {
-                  _isLoading = true;
-                  await _takePhotoFromGallery(
-                    ImageSource.gallery,
-                  );
-                  _isLoading = false;
-                }
-              },
-              isEditable: true,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            CustomTextField(
-              text: "name",
-              textController: _nameController,
-            ),
-            CustomTextField(
-              text: "address",
-              textController: _addressController,
-            ),
-            CustomTextField(
-              text: "email",
-              textController: _emailController,
-            ),
-            CustomTextField(
-              text: "phone number",
-              textController: _phoneController,
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            GestureDetector(
-              onTap: () async {
-                if (!_isLoading) {
-                  setState(
-                    () {
+      body: Stack(
+        children: [
+          Image.network(
+            'images/register.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+          ),
+          SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const SizedBox(
+                  height: 80,
+                ),
+                // const CustomGradientText(
+                //   text: "Edit Profile",
+                // ),
+                ProfileIconWithName(
+                  name: _nameController.text,
+                  imageUrl: image?.path ??
+                      'https://cdn.pixabay.com/photo/2023/02/08/02/40/iron-man-7775599_1280.jpg',
+                  email: widget.data['email'],
+                  onTap: () async {
+                    if (!_isLoading) {
                       _isLoading = true;
-                    },
-                  );
-                  await _updateUserData();
-                  setState(
-                    () {
+                      await _takePhotoFromGallery(
+                        ImageSource.gallery,
+                      );
                       _isLoading = false;
-                    },
-                  );
-                }
-              },
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const CustomGradientButton(
-                      text: "Apply Changes",
-                    ),
+                    }
+                  },
+                  isEditable: true,
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                CustomTextField(
+                  text: "name",
+                  textController: _nameController,
+                ),
+                CustomTextField(
+                  text: "address",
+                  textController: _addressController,
+                ),
+                CustomTextField(
+                  text: "email",
+                  textController: _emailController,
+                ),
+                CustomTextField(
+                  text: "phone number",
+                  textController: _phoneController,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () async {
+                    if (!_isLoading) {
+                      setState(
+                        () {
+                          _isLoading = true;
+                        },
+                      );
+                      await _updateUserData();
+                      setState(
+                        () {
+                          _isLoading = false;
+                        },
+                      );
+                    }
+                  },
+                  child: _isLoading
+                      ? const CircularProgressIndicator()
+                      : const CustomGradientButton(
+                          text: "Apply Changes",
+                        ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: const CustomGradientButton(
+                    text: "Cancel",
+                    gradient: true,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: const CustomGradientButton(
-                text: "Cancel",
-                gradient: true,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

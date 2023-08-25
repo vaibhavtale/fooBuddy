@@ -108,52 +108,48 @@ class _MenuPageState extends State<MenuPage> {
                     height: 80,
                     color: Colors.grey[400],
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
+                        Container(
+                          height: 50,
+                          width: 200,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(
+                              15,
+                            ),
+                            color: Colors.white70,
                           ),
-                          child: Container(
-                            height: 50,
-                            width: 200,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                15,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                ),
+                                child: GestureDetector(
+                                  onTap: () => setState(
+                                    () {},
+                                  ),
+                                  child: const Icon(
+                                    Icons.search,
+                                    size: 30,
+                                    color: Colors.black,
+                                  ),
+                                ),
                               ),
-                              color: Colors.white70,
-                            ),
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                  ),
-                                  child: GestureDetector(
-                                    onTap: () => setState(
-                                      () {},
-                                    ),
-                                    child: const Icon(
-                                      Icons.search,
-                                      size: 30,
-                                      color: Colors.black,
-                                    ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                child: TextField(
+                                  onChanged: (value) {
+                                    searchQuery = value;
+                                  },
+                                  decoration: const InputDecoration(
+                                    border: InputBorder.none,
                                   ),
                                 ),
-                                const SizedBox(
-                                  width: 5,
-                                ),
-                                Expanded(
-                                  child: TextField(
-                                    onChanged: (value) {
-                                      searchQuery = value;
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: InputBorder.none,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         Row(
