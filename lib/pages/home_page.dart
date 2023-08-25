@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           title: const CustomGradientText(
             text: "FoodBuddy Online",
           ),
@@ -33,13 +33,10 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               child: Container(
-                margin: const EdgeInsets.only(
-                  left: 10,
-                  right: 10,
-                  top: 5,
-                  bottom: 15,
+                margin: const EdgeInsets.all(
+                  12,
                 ),
-                color: Colors.amberAccent,
+                color: Colors.white30,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10,
@@ -55,7 +52,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ],
-          elevation: 0,
+          elevation: 1,
         ),
         body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
           future: _firestore.collection('hotels').get(),

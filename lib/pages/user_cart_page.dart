@@ -81,20 +81,52 @@ class _UserCartState extends State<UserCart> {
           'item_price': data['userCart'][i]['price'],
           'other_charges': data['userCart'][i]['other_charges'],
           'product_id': data['userCart'][i]['product_id'],
+          'name': data['userCart'][i]['name'],
           'total_price': (data['userCart'][i]['price'] as int) *
               (data['userCart'][i]['item_count'] as int),
+          'time': DateTime.now(),
         },
       );
     }
+    // Check if the document with the user's email already exists
+    QuerySnapshot existingDocs = await _firestore
+        .collection('orders')
+        .where('email', isEqualTo: _auth.currentUser!.email)
+        .get();
+
+    if (existingDocs.docs.isNotEmpty) {
+      DocumentSnapshot existingDoc = existingDocs.docs.first;
+      List<dynamic> existingProducts = existingDoc['products'];
+      for (int i = 0; i < cartItems.length; i++) {
+        existingProducts.add(cartItems[i]);
+      }
+      try {
+        await existingDoc.reference.update(
+          {
+            'products': existingProducts,
+          },
+        );
+        showMessage(
+          context,
+          'Order placed successfully..',
+        );
+      } catch (e) {
+        showMessage(
+          context,
+          'something went wrong.. try later!',
+        );
+      }
+      return;
+    }
 
     Map<String, dynamic> itemData = {
+      'email': _auth.currentUser!.email,
       'address': data['address'],
       'is_processed': false,
       'location': GeoPoint(position.latitude, position.longitude),
       'name': data['name'],
       'phone': data['phone_number'],
       'products': cartItems,
-      'time': DateTime.now(),
     };
 
     try {

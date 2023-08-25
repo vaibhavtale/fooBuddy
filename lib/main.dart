@@ -17,7 +17,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({
+    super.key,
+  });
 
   // This widget is the root of your application.
   @override
@@ -30,7 +32,11 @@ class MyApp extends StatelessWidget {
 }
 
 class AuthCheck extends StatefulWidget {
-  const AuthCheck({Key? key}) : super(key: key);
+  const AuthCheck({
+    Key? key,
+  }) : super(
+          key: key,
+        );
 
   @override
   State<AuthCheck> createState() => _AuthCheckState();

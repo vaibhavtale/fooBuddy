@@ -65,9 +65,15 @@ class _SavedItemsPageState extends State<SavedItemsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Saved Items",
+        title: const Center(
+          child: Text(
+            'Saved Items',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
         ),
+        backgroundColor: Colors.lime[200],
       ),
       body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
         future: _firestore

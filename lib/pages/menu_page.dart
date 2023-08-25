@@ -6,7 +6,12 @@ import 'package:foodbuddy/pages/user_cart_page.dart';
 class MenuPage extends StatefulWidget {
   final Map<String, dynamic>? data;
 
-  const MenuPage({Key? key, required this.data}) : super(key: key);
+  const MenuPage({
+    Key? key,
+    required this.data,
+  }) : super(
+          key: key,
+        );
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -33,7 +38,9 @@ class _MenuPageState extends State<MenuPage> {
           elevation: 0,
           actions: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(
+                8.0,
+              ),
               child: IconButton(
                 onPressed: () => Navigator.push(
                   context,
@@ -67,6 +74,15 @@ class _MenuPageState extends State<MenuPage> {
                     (doc) => doc.data(),
                   )
                   .toList();
+              List<Map<String, dynamic>> filteredMenuList = [];
+
+              // for(int i=0; i<productList.length; i++){
+              //
+              //   if(productList[i]['name'].contains(searchQuery)){
+              //
+              //     filteredMenuList.a
+              //   }
+              // }
 
               return Stack(
                 alignment: Alignment.bottomCenter,
@@ -99,7 +115,7 @@ class _MenuPageState extends State<MenuPage> {
                           ),
                           child: Container(
                             height: 50,
-                            width: 270,
+                            width: 200,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(
                                 15,
@@ -140,6 +156,67 @@ class _MenuPageState extends State<MenuPage> {
                             ),
                           ),
                         ),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(
+                                    10,
+                                  ),
+                                  bottomLeft: Radius.circular(
+                                    10,
+                                  ),
+                                ),
+                                color: Colors.white24,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 22,
+                                  vertical: 12,
+                                ),
+                                child: Text(
+                                  'Veg',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 2,
+                            ),
+                            Container(
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(
+                                    10,
+                                  ),
+                                  bottomRight: Radius.circular(
+                                    10,
+                                  ),
+                                ),
+                                color: Colors.white24,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 12,
+                                ),
+                                child: Text(
+                                  'Non Veg',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
                     ),
                   ),

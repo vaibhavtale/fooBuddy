@@ -4,7 +4,10 @@ import 'package:simple_gradient_text/simple_gradient_text.dart';
 class CustomGradientText extends StatelessWidget {
   final String text;
 
-  const CustomGradientText({Key? key, required this.text}) : super(key: key);
+  const CustomGradientText({
+    Key? key,
+    required this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +17,10 @@ class CustomGradientText extends StatelessWidget {
         fontSize: 35,
         fontWeight: FontWeight.bold,
       ),
-      colors: const [Colors.red, Colors.orange],
+      colors: const [
+        Colors.red,
+        Colors.orange,
+      ],
     );
   }
 }
@@ -25,8 +31,13 @@ class CustomGradientButton extends StatelessWidget {
   final String text;
   final bool? gradient;
 
-  const CustomGradientButton({Key? key, required this.text, this.gradient})
-      : super(key: key);
+  const CustomGradientButton({
+    Key? key,
+    required this.text,
+    this.gradient,
+  }) : super(
+          key: key,
+        );
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +45,14 @@ class CustomGradientButton extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: gradient == null
-            ? const LinearGradient(colors: [
-                Colors.orangeAccent,
-                Colors.deepOrangeAccent,
-              ], begin: Alignment.bottomLeft, end: Alignment.topRight)
+            ? const LinearGradient(
+                colors: [
+                  Colors.orangeAccent,
+                  Colors.deepOrangeAccent,
+                ],
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+              )
             : null,
         border: gradient == true
             ? Border.all(
@@ -47,13 +62,14 @@ class CustomGradientButton extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(
-            horizontal: gradient == null ? 80 : 30, vertical: 15),
+            horizontal: gradient == null ? 60 : 20, vertical: 10),
         child: Text(
           text,
           style: TextStyle(
-              fontSize: 25,
-              color: gradient == null ? Colors.white : Colors.black,
-              fontWeight: FontWeight.bold),
+            fontSize: 22,
+            color: gradient == null ? Colors.white : Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

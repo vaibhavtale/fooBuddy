@@ -24,6 +24,27 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.yellow[200],
+        title: const Center(
+          child: Text(
+            'my profile',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.notifications,
+              size: 25,
+              color: Colors.black,
+            ),
+          ),
+        ],
+      ),
       backgroundColor: Colors.white54,
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(

@@ -25,11 +25,13 @@ class _HotelStyleState extends State<HotelStyle> {
         seconds: 1,
       ),
       () {
-        setState(
-          () {
-            _showPlaceholder = false;
-          },
-        );
+        if (mounted) {
+          setState(
+            () {
+              _showPlaceholder = false;
+            },
+          );
+        }
       },
     );
   }
@@ -63,7 +65,7 @@ class _HotelStyleState extends State<HotelStyle> {
                         'images/delivery_boy.png',
                       )
                     : Image.network(
-                        widget.data!['image_url'],
+                        widget.data!['image_url'].toString(),
                         fit: BoxFit.cover,
                       ),
               ),

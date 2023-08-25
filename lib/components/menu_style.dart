@@ -6,9 +6,14 @@ class MyMenuStyle extends StatefulWidget {
   final Map<String, dynamic> data;
   final bool? fromSearchPage;
 
-  const MyMenuStyle(
-      {Key? key, required this.data, this.fromSearchPage, required this.id})
-      : super(key: key);
+  const MyMenuStyle({
+    Key? key,
+    required this.data,
+    this.fromSearchPage,
+    required this.id,
+  }) : super(
+          key: key,
+        );
 
   @override
   State<MyMenuStyle> createState() => _MyMenuStyleState();
@@ -33,17 +38,24 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
           alignment: AlignmentDirectional.bottomCenter,
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 30),
+              margin: const EdgeInsets.only(
+                top: 30,
+              ),
               height: MediaQuery.of(context).size.height * 0.23,
               width: 350,
-              decoration: const BoxDecoration(
-                  // color: Colors.red
-                  ),
+              decoration: BoxDecoration(
+                color: Colors.teal[100],
+                borderRadius: BorderRadius.circular(
+                  10,
+                ),
+              ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
+                borderRadius: BorderRadius.circular(
+                  10,
+                ),
+                child: Image.network(
                   widget.data['image_url'],
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -51,31 +63,43 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               height: MediaQuery.of(context).size.height * 0.08,
               width: 350,
               decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      bottomRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10)),
-                  color: Colors.white60),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(
+                    10,
+                  ),
+                  bottomLeft: Radius.circular(
+                    10,
+                  ),
+                ),
+                color: Colors.white60,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
                     child: Text(
                       widget.data['name'],
                       style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
                     child: Text(
                       "\$${widget.data['price']}",
                       style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.red),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
                     ),
                   )
                 ],
@@ -83,18 +107,25 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
             ),
             if (widget.fromSearchPage == true)
               Container(
-                margin: const EdgeInsets.only(top: 30, bottom: 130, right: 140),
+                margin: const EdgeInsets.only(
+                  top: 30,
+                  bottom: 130,
+                  right: 140,
+                ),
                 // height: MediaQuery.of(context).size.height * 0.05,
                 color: Colors.white60,
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 5,
+                  ),
                   child: Text(
                     widget.data['hotel_name'],
                     style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black),
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ),

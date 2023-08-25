@@ -77,7 +77,7 @@ class _CustomListTileState extends State<CustomListTile> {
                     width: 80,
                     height: 70,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      // color: Colors.red,
                       borderRadius: BorderRadius.circular(
                         12,
                       ),
@@ -144,7 +144,7 @@ class _CustomListTileState extends State<CustomListTile> {
               icon: const Icon(
                 Icons.delete,
                 color: Colors.pinkAccent,
-                size: 35,
+                size: 30,
               ),
             ),
           ],
