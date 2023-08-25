@@ -61,11 +61,11 @@ class _HotelStyleState extends State<HotelStyle> {
                   12,
                 ),
                 child: _showPlaceholder
-                    ? Image.network(
+                    ? Image.asset(
                         'images/delivery_boy.png',
                       )
                     : Image.network(
-                        widget.data!['image_url'].toString(),
+                        widget.data!['image_url'],
                         fit: BoxFit.cover,
                       ),
               ),

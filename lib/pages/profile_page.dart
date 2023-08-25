@@ -49,13 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
           future: _firestore
-              .collection(
-                'users',
-              )
-              .where(
-                'email',
-                isEqualTo: _auth.currentUser!.email,
-              )
+              .collection('users')
+              .where('email', isEqualTo: _auth.currentUser!.email)
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {

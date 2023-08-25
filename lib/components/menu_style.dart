@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/menu_item_page.dart';
 
@@ -6,14 +7,9 @@ class MyMenuStyle extends StatefulWidget {
   final Map<String, dynamic> data;
   final bool? fromSearchPage;
 
-  const MyMenuStyle({
-    Key? key,
-    required this.data,
-    this.fromSearchPage,
-    required this.id,
-  }) : super(
-          key: key,
-        );
+  const MyMenuStyle(
+      {Key? key, required this.data, this.fromSearchPage, required this.id})
+      : super(key: key);
 
   @override
   State<MyMenuStyle> createState() => _MyMenuStyleState();
@@ -50,12 +46,12 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
                 ),
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(
-                  10,
-                ),
-                child: Image.network(
-                  widget.data['image_url'],
-                  fit: BoxFit.contain,
+                borderRadius: BorderRadius.circular(10),
+                child: CachedNetworkImage(
+                  imageUrl: widget.data['image_url'],
+                  placeholder: (context, url) =>
+                      Center(child: Image.asset("images/delivery_boy.png")),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -64,12 +60,8 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               width: 350,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(
-                    10,
-                  ),
-                  bottomLeft: Radius.circular(
-                    10,
-                  ),
+                  bottomRight: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
                 ),
                 color: Colors.white60,
               ),
