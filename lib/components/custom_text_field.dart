@@ -16,7 +16,7 @@ class CustomTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double dist = MediaQuery.of(context).size.width * 0.22;
+    double dist = MediaQuery.of(context).size.width * 0.18;
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: dist,

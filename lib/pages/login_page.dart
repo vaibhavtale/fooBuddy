@@ -90,226 +90,255 @@ class _LoginPageState extends State<LoginPage> {
               horizontal: MediaQuery.of(context).size.width * 0.10,
               vertical: MediaQuery.of(context).size.height * 0.15,
             ),
-            color: Colors.white,
-            child: SingleChildScrollView(
-              child: Center(
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    const Column(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26.withOpacity(
+                    1,
+                  ), // Shadow color
+                  spreadRadius: 9, // How much the shadow spreads
+                  blurRadius: 15, // How blurry the shadow is
+                  offset: const Offset(
+                    1,
+                    5,
+                  ),
+                ),
+              ],
+            ),
+            child: Stack(
+              children: [
+                Image.network(
+                  'images/login.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
+                ),
+                SingleChildScrollView(
+                  child: Center(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          "log in to",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const SizedBox(
+                          height: 40,
                         ),
-                        SizedBox(
-                          height: 5,
+                        const LogInText(
+                          text: 'Sign in',
                         ),
-                        Text(
-                          "celebrate the foodie in you.",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        const LogInText(
+                          text: 'celebrate foodie in you..',
                         ),
-                      ],
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    CustomTextField(
-                      text: "email",
-                      textController: _emailController,
-                    ),
-                    CustomTextField(
-                      text: "password",
-                      textController: _passWordController,
-                      obscure: true,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        _resetPasswordController.clear();
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text(
-                              "Reset Password",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                            ),
-                            content: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  "Email will be sent with a \nlink please follow that to \nreset password.",
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    child: TextField(
-                                      controller: _resetPasswordController,
-                                      decoration: const InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Email",
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            actions: [
-                              TextButton(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: const Text(
-                                  "cancel",
-                                ),
-                              ),
-                              TextButton(
-                                onPressed: () => resetPassword(),
-                                child: const Text(
-                                  "send link",
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.22,
+                        const SizedBox(
+                          height: 30,
                         ),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Forgot Password?",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blueAccent,
-                              ),
-                            ),
-                          ],
+                        CustomTextField(
+                          text: "email",
+                          textController: _emailController,
                         ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await signIn();
-                      },
-                      child: const CustomGradientButton(
-                        text: "Login",
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    GestureDetector(
-                      onTap: () => signInWithGoogle(),
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.27,
+                        CustomTextField(
+                          text: "password",
+                          textController: _passWordController,
+                          obscure: true,
                         ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(
-                              10,
-                            ),
-                            border: Border.all(
-                              color: Colors.blue,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 15,
-                                  vertical: 5,
-                                ),
-                                child: Text(
-                                  'Google',
+                        GestureDetector(
+                          onTap: () {
+                            _resetPasswordController.clear();
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text(
+                                  "Reset Password",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
                                     fontSize: 18,
                                   ),
                                 ),
-                              ),
-                              Container(
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
-                                    bottomRight: Radius.circular(
-                                      10,
+                                content: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    const Text(
+                                      "Email will be sent with a \nlink please follow that to \nreset password.",
                                     ),
-                                    topRight: Radius.circular(
-                                      10,
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: TextField(
+                                          controller: _resetPasswordController,
+                                          decoration: const InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Email",
+                                          ),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
+                                    child: const Text(
+                                      "cancel",
                                     ),
                                   ),
-                                  color: Colors.white,
-                                ),
-                                child: const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 5,
-                                    vertical: 5,
-                                  ),
-                                  child: Icon(
-                                    Icons.g_mobiledata_outlined,
-                                    size: 30,
-                                    color: Colors.blue,
-                                  ),
-                                ),
+                                  TextButton(
+                                    onPressed: () => resetPassword(),
+                                    child: const Text(
+                                      "send link",
+                                    ),
+                                  )
+                                ],
                               ),
-                            ],
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.22,
+                            ),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Forgot Password?",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.blueAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const RegisterPage(),
+                        const SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      child: const CustomGradientButton(
-                        text: 'Create New Account',
-                        gradient: true,
-                      ),
+                        GestureDetector(
+                          onTap: () async {
+                            await signIn();
+                          },
+                          child: const CustomGradientButton(
+                            text: "Login",
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () => signInWithGoogle(),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:
+                                  MediaQuery.of(context).size.width * 0.22,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.blue,
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ),
+                                border: Border.all(
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 15,
+                                      vertical: 5,
+                                    ),
+                                    child: Text(
+                                      'Google',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    decoration: const BoxDecoration(
+                                      borderRadius: BorderRadius.only(
+                                        bottomRight: Radius.circular(
+                                          10,
+                                        ),
+                                        topRight: Radius.circular(
+                                          10,
+                                        ),
+                                      ),
+                                      color: Colors.white,
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 5,
+                                        vertical: 5,
+                                      ),
+                                      child: Icon(
+                                        Icons.g_mobiledata_outlined,
+                                        size: 30,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterPage(),
+                            ),
+                          ),
+                          child: const CustomGradientButton(
+                            text: 'Create New Account',
+                            gradient: true,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class LogInText extends StatelessWidget {
+  final String text;
+  const LogInText({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.w800,
       ),
     );
   }
