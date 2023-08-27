@@ -9,7 +9,11 @@ import 'package:foodbuddy/pages/edit_profile_page.dart';
 import 'package:foodbuddy/pages/orders_page.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  const ProfilePage({
+    Key? key,
+  }) : super(
+          key: key,
+        );
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -49,8 +53,13 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
           future: _firestore
-              .collection('users')
-              .where('email', isEqualTo: _auth.currentUser!.email)
+              .collection(
+                'users',
+              )
+              .where(
+                'email',
+                isEqualTo: _auth.currentUser!.email,
+              )
               .get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
@@ -138,7 +147,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               }
             }
-            return const Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
           },
         ),
       ),

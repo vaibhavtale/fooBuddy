@@ -237,67 +237,45 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(
                         height: 20,
                       ),
-                      GestureDetector(
-                        onTap: () => signInWithGoogle(),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal:
-                                MediaQuery.of(context).size.width * 0.20,
-                          ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(
-                                10,
+                      Container(
+                        width: 130,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () => signInWithGoogle(),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  image: const DecorationImage(
+                                    image: AssetImage(
+                                      'images/Google.png',
+                                    ),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
                               ),
-                              border: Border.all(
+                            ),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                  10,
+                                ),
                                 color: Colors.blue,
                               ),
+                              child: const Icon(
+                                Icons.facebook,
+                                color: Colors.white,
+                                size: 40,
+                              ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 11,
-                                    vertical: 5,
-                                  ),
-                                  child: Text(
-                                    'Google',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ),
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                      bottomRight: Radius.circular(
-                                        10,
-                                      ),
-                                      topRight: Radius.circular(
-                                        10,
-                                      ),
-                                    ),
-                                    color: Colors.white,
-                                  ),
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 5,
-                                      vertical: 5,
-                                    ),
-                                    child: Icon(
-                                      Icons.g_mobiledata_outlined,
-                                      size: 30,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                          ],
                         ),
                       ),
                       const SizedBox(

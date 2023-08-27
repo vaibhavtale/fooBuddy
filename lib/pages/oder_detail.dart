@@ -186,7 +186,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               '$date',
                             ),
                             const SizedBox(
-                              height: 50,
+                              height: 20,
                             ),
                             const CustomNonGradientButton(
                               text: 'Order Again',
