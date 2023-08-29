@@ -115,42 +115,68 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                     SizedBox(
                       height: 70,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CustomContainer(
-                          imagepath: 'images/burger1.png',
-                          text: 'Burger',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/paneer_masala.png',
-                          text: 'Paneer',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/milk_shake.png',
-                          text: 'Milk shake',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/hot_dog.png',
-                          text: 'Hot dog',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/pizza2.png',
-                          text: 'Pizza',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/ice_cream1.png',
-                          text: 'Ice cream',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/chicken2.png',
-                          text: 'Chicken',
-                        ),
-                        CustomContainer(
-                          imagepath: 'images/biryani1.png',
-                          text: 'Biryani',
-                        ),
-                      ],
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          CustomContainer(
+                            imagepath: 'images/burger1.png',
+                            text: 'Burger',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/paneer_masala.png',
+                            text: 'Paneer',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/milk_shake.png',
+                            text: 'Milk shake',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/hot_dog.png',
+                            text: 'Hot dog',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/pizza2.png',
+                            text: 'Pizza',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/ice_cream1.png',
+                            text: 'Ice cream',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/chicken2.png',
+                            text: 'Chicken',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                          CustomContainer(
+                            imagepath: 'images/biryani1.png',
+                            text: 'Biryani',
+                          ),
+                          SizedBox(
+                            width: 15,
+                          ),
+                        ],
+                      ),
                     ),
                     searchQuery.isNotEmpty
                         ? Expanded(
