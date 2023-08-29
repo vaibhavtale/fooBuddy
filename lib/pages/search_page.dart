@@ -112,6 +112,46 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        CustomContainer(
+                          imagepath: 'images/burger1.png',
+                          text: 'Burger',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/paneer_masala.png',
+                          text: 'Paneer',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/milk_shake.png',
+                          text: 'Milk shake',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/hot_dog.png',
+                          text: 'Hot dog',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/pizza2.png',
+                          text: 'Pizza',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/ice_cream1.png',
+                          text: 'Ice cream',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/chicken2.png',
+                          text: 'Chicken',
+                        ),
+                        CustomContainer(
+                          imagepath: 'images/biryani1.png',
+                          text: 'Biryani',
+                        ),
+                      ],
+                    ),
                     searchQuery.isNotEmpty
                         ? Expanded(
                             child: ListView.builder(
@@ -127,21 +167,9 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                               },
                             ),
                           )
-                        : const Padding(
-                            padding: EdgeInsets.only(
-                              top: 270,
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Search Tasty Food Here.",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.pinkAccent,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                          ),
+                        : SizedBox(
+                            height: 5,
+                          )
                   ],
                 ),
               );
@@ -151,6 +179,48 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
             );
           },
         ),
+      ),
+    );
+  }
+}
+
+class CustomContainer extends StatelessWidget {
+  final String imagepath;
+  final String text;
+  const CustomContainer(
+      {super.key, required this.imagepath, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 50,
+      height: 80,
+      decoration: BoxDecoration(
+          // image: DecorationImage(image: AssetImage(imagepath)),
+          borderRadius: BorderRadius.circular(5),
+          border: Border.all(color: Colors.blueGrey)),
+      child: Column(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(imagepath), fit: BoxFit.contain),
+              color: Colors.black26,
+            ),
+          ),
+          SizedBox(
+            height: 4,
+          ),
+          Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 8,
+            ),
+          )
+        ],
       ),
     );
   }
