@@ -64,7 +64,7 @@ class _HotelStyleState extends State<HotelStyle> {
                     ? Image.asset(
                         'images/delivery_boy.png',
                       )
-                    : Image.network(
+                    : Image.asset(
                         widget.data!['image_url'],
                         fit: BoxFit.cover,
                       ),

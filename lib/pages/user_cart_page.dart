@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
 import 'package:foodbuddy/components/custom_list_tile.dart';
-import 'package:geolocator/geolocator.dart';
 
 import '../components/custom_methods.dart';
 
@@ -68,9 +67,9 @@ class _UserCartState extends State<UserCart> {
   }
 
   Future<void> _setOrder(Map<String, dynamic> data) async {
-    Position position = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high,
-    );
+    // Position position = await Geolocator.getCurrentPosition(
+    //   desiredAccuracy: LocationAccuracy.high,
+    // );
 
     List<Map<String, dynamic>> cartItems = [];
     for (int i = 0; i < data['userCart'].length; i++) {
@@ -123,7 +122,7 @@ class _UserCartState extends State<UserCart> {
       'email': _auth.currentUser!.email,
       'address': data['address'],
       'is_processed': false,
-      'location': GeoPoint(position.latitude, position.longitude),
+      // 'location': GeoPoint(position.latitude, position.longitude),
       'name': data['name'],
       'phone': data['phone_number'],
       'products': cartItems,

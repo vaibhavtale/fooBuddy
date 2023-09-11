@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/pages/menu_item_page.dart';
 
@@ -47,10 +46,8 @@ class _MyMenuStyleState extends State<MyMenuStyle> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: CachedNetworkImage(
-                  imageUrl: widget.data['image_url'],
-                  placeholder: (context, url) =>
-                      Center(child: Image.asset("images/delivery_boy.png")),
+                child: Image.asset(
+                  widget.data['image_url'],
                   fit: BoxFit.cover,
                 ),
               ),

@@ -40,6 +40,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
           future: _firestore.collection('menu').get(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
+              List<Map<String, dynamic>> primaryList;
               List<Map<String, dynamic>> productList =
                   snapshot.data!.docs.map((doc) => doc.data()).toList();
               List<Map<String, dynamic>> filteredMenuList = [];
@@ -112,71 +113,85 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                         ),
                       ),
                     ),
-                    SizedBox(
-                      height: 70,
+                    const SizedBox(
+                      height: 60,
                     ),
-                    SingleChildScrollView(
+                    const Text(
+                      'Choose Your favorite category',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
+                          SizedBox(
+                            width: 40,
+                          ),
                           CustomContainer(
                             imagepath: 'images/burger1.png',
                             text: 'Burger',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/paneer_masala.png',
                             text: 'Paneer',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/milk_shake.png',
                             text: 'Milk shake',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/hot_dog.png',
                             text: 'Hot dog',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/pizza2.png',
                             text: 'Pizza',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/ice_cream1.png',
                             text: 'Ice cream',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/chicken2.png',
                             text: 'Chicken',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                           CustomContainer(
                             imagepath: 'images/biryani1.png',
                             text: 'Biryani',
                           ),
                           SizedBox(
-                            width: 15,
+                            width: 25,
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
                     ),
                     searchQuery.isNotEmpty
                         ? Expanded(
@@ -193,7 +208,7 @@ class _SearchScreenPageState extends State<SearchScreenPage> {
                               },
                             ),
                           )
-                        : SizedBox(
+                        : const SizedBox(
                             height: 5,
                           )
                   ],
@@ -224,7 +239,7 @@ class CustomContainer extends StatelessWidget {
       decoration: BoxDecoration(
           // image: DecorationImage(image: AssetImage(imagepath)),
           borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: Colors.blueGrey)),
+          border: Border.all(color: Colors.black)),
       child: Column(
         children: [
           Container(
@@ -232,16 +247,18 @@ class CustomContainer extends StatelessWidget {
             height: 50,
             decoration: BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage(imagepath), fit: BoxFit.contain),
-              color: Colors.black26,
+                image: AssetImage(imagepath),
+                fit: BoxFit.contain,
+              ),
+              color: Colors.yellow[100],
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 4,
           ),
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 8,
             ),

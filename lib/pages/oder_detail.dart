@@ -19,8 +19,9 @@ class _OrderDetailsState extends State<OrderDetails> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue[100],
         title: const Center(child: Text('Order details')),
+        elevation: 0,
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: _firestore.collection('menu').doc(widget.id).get(),
@@ -61,7 +62,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 40,
-                              vertical: 25,
+                              vertical: 5,
                             ),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -95,8 +96,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   ),
                                   width: 450,
                                   height: 250,
-                                  child: Image.network(
-                                    data['image_url'],
+                                  child: Image.asset(
+                                    'images/biryani1.jpg',
                                     fit: BoxFit.cover,
                                   ),
                                 ),

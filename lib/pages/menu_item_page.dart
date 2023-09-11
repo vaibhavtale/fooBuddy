@@ -146,7 +146,6 @@ class _MenuItemPageState extends State<MenuItemPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.data);
     return Scaffold(
       backgroundColor: Colors.cyan[100],
       appBar: AppBar(
@@ -154,14 +153,17 @@ class _MenuItemPageState extends State<MenuItemPage> {
         actions: [
           Container(
             margin: const EdgeInsets.all(6),
-            color: Colors.white,
+            decoration: BoxDecoration(
+              color: Colors.blue[200],
+              shape: BoxShape.circle,
+            ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
               child: IconButton(
                 onPressed: _addItemToSavedList,
                 icon: const Icon(
                   Icons.add_task_outlined,
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -192,8 +194,8 @@ class _MenuItemPageState extends State<MenuItemPage> {
               ),
               width: 300,
               height: 300,
-              child: Image.network(
-                widget.data['image_url'],
+              child: Image.asset(
+                'images/paneer_masala.png',
               ),
             ),
             Expanded(

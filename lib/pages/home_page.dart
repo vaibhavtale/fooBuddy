@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:foodbuddy/components/custom_gradient_text.dart';
-import 'package:foodbuddy/pages/user_cart_page.dart';
 
 import '../components/hotel_style.dart';
 
@@ -24,34 +23,6 @@ class _HomePageState extends State<HomePage> {
           title: const CustomGradientText(
             text: "FoodBuddy Online",
           ),
-          actions: [
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserCart(),
-                ),
-              ),
-              child: Container(
-                margin: const EdgeInsets.all(
-                  12,
-                ),
-                color: Colors.white30,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                  child: Text(
-                    _itemCount.toString(),
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 30,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
           elevation: 1,
         ),
         body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
